@@ -5,9 +5,15 @@
 
 <mapper namespace="com.mycli.demo.dao.UserMapper">
     <insert id="addUserinfo">
-      INSERT INTO t_user
+     INSERT INTO t_user
     (username,password,role,isdelect)  VALUE
     (#{username},#{password},#{role},#{isdelect})
     </insert>
+
+    <select id="selectUser" resultType="com.mycli.demo.model.User">
+     SELECT * FROM  t_user WHERE  username=#{username}
+    and password=#{password} and role=#{role}
+    </select>
+
 
 </mapper>

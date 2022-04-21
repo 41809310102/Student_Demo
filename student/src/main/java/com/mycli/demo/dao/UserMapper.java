@@ -13,4 +13,7 @@ public interface UserMapper {
 
     public int addUserinfo(User user);
 
+    public User selectUser(String username,String password,String role);
+
+
 }

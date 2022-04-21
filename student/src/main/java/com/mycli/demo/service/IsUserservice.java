@@ -10,4 +10,6 @@ public interface IsUserservice {
      * @return 数据库处理
      */
     public int  addUser(User user);
+
+    public User selectUser(String username,String password,String role);
 }
