@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class Createcode {
 
     /**
-     * @desc:生成宠物专属二维码
+     * @desc:专属二维码
      * */
 
     private  int Color[]= {0xFF00FF00,0x0000FF,0x000000};//分别保存为绿色，蓝色，黑二维码颜色
@@ -42,7 +42,7 @@ public class Createcode {
         System.out.println("扫码成功!");
         try{
             User user = new User();
-            user.setId(id);user.setName(name);user.setPhone(phone);
+            user.setId(id);user.setUsername(name);user.setPassword(phone);
             map.put("user",user);
             map.put("msg","success");
             map.put("code",0);
