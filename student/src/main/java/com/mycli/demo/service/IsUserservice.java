@@ -2,7 +2,7 @@ package com.mycli.demo.service;
 
 import com.mycli.demo.model.User;
 
-public interface lsUserservice{
+public interface IsUserservice {
     /**
      * 添加用户信息
      *

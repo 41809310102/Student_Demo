@@ -37,7 +37,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         Contact contact = new Contact("沉默这忍受", "https://blog.csdn.net/ILOVEMYDEAR", "hjj2857154359@126.com");
         return new ApiInfo(
-                "疫情小程序服务器", // 标题
+                "学生管理平台接口测试平台", // 标题
                 "管理各个接口", // 描述
                 "v1.0", // 版本
                 "https://blog.csdn.net/ILOVEMYDEAR", // 组织链接
