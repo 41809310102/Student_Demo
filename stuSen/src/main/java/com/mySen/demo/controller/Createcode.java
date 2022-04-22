@@ -62,9 +62,8 @@ public class Createcode {
 
     @PostMapping("/api/ercode/getCodeUrl")
     public String getcodeurl(){
-        queue.add("https://myfacepic.obs.cn-east-3.myhuaweicloud.com:443/109.18533434.362616.png?AccessKeyId=4ODQCL8ZFIM1FLCAB8GA&Expires=1650630225&Signature=HpfS%2BGUw4ZNFoKTjTlb5cZ7HylU%3D");
         if(queue.size()>0){
-            return "\""+queue.get(queue.size()-1)+"\""; //每次获取最新二维码连接
+            return "\""+queue.get(0)+"\""; //每次获取最新二维码连接
         }else{
             return "error";
         }

@@ -1,5 +1,6 @@
 package com.mySen.demo.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.mySen.demo.model.User;
 import com.mySen.demo.service.IsUserservice;
 import com.mySen.demo.util.OBSUtils;
@@ -98,7 +99,7 @@ public class UserController {
     }
     //上传头像接口
     @RequestMapping("api/user/updateUserpic")
-    private String updateofUserpic(@RequestParam(value = "file") MultipartFile file,int id) throws IOException {
+    private String updateofUserpic(@RequestParam(value = "file") MultipartFile file,@RequestParam int id) throws IOException {
         java.io.File store = null;  //目的文件
         try {
             //存在每个用户有一个自己名字命名的文件夹
@@ -118,7 +119,15 @@ public class UserController {
         return link;
     }
 
-
+    @GetMapping("api/user/selectUserbyid")
+    public  String selectUserbyid(@RequestParam int id){
+        User user = isUserservice.selectUserbyid(id);
+        if(user==null){
+            return "error";
+        }else{
+            return JSON.toJSONString(user);
+        }
+    }
 
 
 }

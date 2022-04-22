@@ -33,12 +33,12 @@
                           <el-card style="width: 140px ;margin-left: 8px" >
                               <div>
                                   <i @click="dialogVisible=true" class="el-icon-edit" style="margin-left: 80px"></i>
-                                  <img src="../../assets/OIP-C.jpg" height="120px" width="100px" alt="">
+                                  <el-image :src="user.pic" style="width: 100px; height: 130px;" ></el-image>
                                   <el-dialog
                                           title="头像更改"
                                           :visible.sync="dialogVisible"
                                           width="30%"
-                                          :before-close="handleClose">
+                                          >
                                       <el-upload
                                               class="upload-demo"
                                               action="http://localhost:9002/api/user/updateUserpic?id=1"
@@ -216,6 +216,7 @@
                     major:"计算机科学与技术",
                     school_group:"计算机科学学院",
                     age:14,
+                    pic:"",
                     hobby:"计算机",
                     desction:"青春是一个短暂的美梦, 当你醒来时, 它早已消失无踪",
                     phone:"18891636436",
@@ -234,15 +235,16 @@
             }
         },
         created() {
-           this.sizeForm = this.user;
+            this.getUserdatabyid();
         },
         methods: {
 
-            async  getUserdata(){
+            async  getUserdatabyid(){
                 // 调用post请求
-                const { data: res } = await this.$http.post("",this.queryInfo);
-                this.applytable = res.data; // 将返回数据赋值
-                this.total = res.numbers; // 总个数
+                let id = window.sessionStorage.getItem('id');
+                const { data: res } = await this.$http.get("api/user/selectUserbyid?id="+id);
+                this.user = res; // 将返回数据赋值
+                this.sizeForm = res;
             },
 
             onSubmit() {
@@ -261,7 +263,8 @@
             //上传头像成功显示
             handleAvatarSuccess(res, file) {
                 this.$message.success("上传成功")
-                this.imageUrl = URL.createObjectURL(file.raw);
+                this.getUserdatabyid();
+                //this.imageUrl = URL.createObjectURL(file.raw);
             }
         },
     }

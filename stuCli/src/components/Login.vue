@@ -71,7 +71,7 @@
 import SIdentify from "@/components/token"
 export default {
   data() {
-    
+
     return {
       loginForm: {
         username: "",
@@ -119,7 +119,7 @@ export default {
          },
       flag:true,
       flag1:false,
-      
+
       sYxi:'',//收到的验证信息
        identifyCodes: '1234567890',
       identifyCode: '',//找回密码图形验证码
@@ -133,7 +133,7 @@ export default {
       this.isDebugLogin && (this.loginForm.code = v)
        },
    },
-  
+
   methods: {
     resetForm(formName) {
         this.$refs[formName].resetFields();
@@ -151,7 +151,8 @@ export default {
           // 调用get请求
         const {data :res} = await this.$http.post("api/user/loginuser", this.loginForm);
          if (res.code==1) {
-             window.sessionStorage.setItem('user',this.loginForm.username); // session 放置
+             window.sessionStorage.setItem('user',res.user.username); // session 放置
+             window.sessionStorage.setItem('id',res.user.id); // session 放置
            window.sessionStorage.setItem('flag','ok'); // session 放置
            this.$message.success(res.msg);
            this.$router.push({ path: "/home"});
@@ -218,7 +219,7 @@ export default {
     }
   },
 
-  mounted(){  
+  mounted(){
   //this.makeCode(this.identifyCodes,4);
   },
   created(){
