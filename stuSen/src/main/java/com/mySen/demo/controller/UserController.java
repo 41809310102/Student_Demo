@@ -2,17 +2,28 @@ package com.mySen.demo.controller;
 
 import com.mySen.demo.model.User;
 import com.mySen.demo.service.IsUserservice;
+import com.mySen.demo.util.OBSUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static java.lang.System.out;
+
 /**
  * 用户逻辑
  *
  * @param
  * @return
  */
+@CrossOrigin("http://localhost:8081")
 @RestController
 public class UserController {
 
@@ -55,7 +66,7 @@ public class UserController {
     public Map<String,Object> loginUser(@RequestBody User users){
         Map<String,Object> map = new HashMap<>();
         try{
-            User user = isUserservice.selectUser(users.getUsername(),users.getPassword(),"学生");
+            User user = isUserservice.selectUser(users.getUsername(),users.getPassword(),"普通学生");
             if(user==null){
                 map.put("code",-2);
                 map.put("msg","账号或密码错误，请重新登录");
@@ -76,4 +87,38 @@ public class UserController {
         }
         return map;
     }
+
+
+
+    @PostMapping("api/user/updateUser")
+    private String updateofUser(@RequestBody User user){
+         System.out.println(user.toString());
+         int i = isUserservice.updateUserofid(user);
+         return i>0? "success":"error";
+    }
+    //上传头像接口
+    @RequestMapping("api/user/updateUserpic")
+    private String updateofUserpic(@RequestParam(value = "file") MultipartFile file,int id) throws IOException {
+        java.io.File store = null;  //目的文件
+        try {
+            //存在每个用户有一个自己名字命名的文件夹
+            store = new java.io.File(java.io.File.separator + "userheadpic", file.getOriginalFilename());
+        } catch (Exception e) {
+            return "error";
+        }
+        long size = file.getSize();  //上传文件的大小
+        //将文件存入obs
+        OBSUtils obs = new OBSUtils();
+        String Key = "hjj"+file.getOriginalFilename()+".jpg";
+        //  out.println(Key);
+        InputStream inputStream = file.getInputStream();
+        obs.ObsUpload("myfacepic", Key, inputStream);
+        String link = obs.getLink(Key);
+        isUserservice.updateofheadpic(link,id);
+        return link;
+    }
+
+
+
+
 }

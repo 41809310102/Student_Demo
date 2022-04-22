@@ -15,5 +15,23 @@
     and password=#{password} and role=#{role}
     </select>
 
+    <select id="selectUserbyid" resultType="com.mySen.demo.model.User">
+     SELECT * FROM  t_user WHERE id=#{id}
+    </select>
+
+     <update id="updateUser">
+     UPDATE  t_user SET username=#{username},major=#{major},
+     shool_group=#{shool_group},cardid=#{cardid},sex=#{sex},desction=#{desction},age=#{age},hobby=#{hobby},
+     association=#{association} WHERE id=#{id}
+     </update>
+
+    <update id="updateUserpic">
+     UPDATE t_user SET pic=#{pic} WHERE id=#{id}
+     </update>
+
+    <update id="updateUsergrade">
+     UPDATE  t_user SET grade=#{grade} WHERE id=#{id}
+    </update>
+
 
 </mapper>

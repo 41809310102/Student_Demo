@@ -15,5 +15,9 @@ public interface UserMapper {
 
     public User selectUser(String username,String password,String role);
 
+    public int updateUser(User user);
 
+    public int updateUserpic(String pic,int id);
+
+    public User selectUserbyid(int id);
 }

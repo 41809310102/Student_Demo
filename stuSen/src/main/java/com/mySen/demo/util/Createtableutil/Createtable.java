@@ -124,7 +124,7 @@ public class Createtable {
         System.out.println(Fromstring);
     }
 
-    public void createupdateFrom(String[] classdata){
+    public void createupdateTable(String[] classdata){
      String Fromsql = "UPDATE FROM vaccdb SET"+"\n";
         if(classdata.length!=0){
             for(int i = 0;i<classdata.length-1;i++){

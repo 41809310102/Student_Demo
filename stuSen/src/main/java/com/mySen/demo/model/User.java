@@ -12,12 +12,14 @@ public class User {
     private int id;
     private int vid; //奖励编号
     private String pic;//头像
+    private String phone;
     private String username;
     private String password;
     private String major;
     private String shool_group;
     private String cardid;
     private String sex;
+    private String desction;
     private String age;
     private String grade; //学分
     private String hobby;//爱好
@@ -28,6 +30,6 @@ public class User {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         User u = new User();
         Createtable t = new Createtable();
-        t.createTableUtils(u,"t_user");
+        t.createupdateTable(t.getClassdataName(u));
     }
 }

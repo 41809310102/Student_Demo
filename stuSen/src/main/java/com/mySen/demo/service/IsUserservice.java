@@ -12,4 +12,10 @@ public interface IsUserservice {
     public int  addUser(User user);
 
     public User selectUser(String username,String password,String role);
+
+    public int updateUserofid(User user);
+
+    public int updateofheadpic(String pic,int id);
+
+    public User selectUserbyid(int id);
 }

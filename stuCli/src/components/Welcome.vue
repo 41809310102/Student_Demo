@@ -1,6 +1,6 @@
 <template>
   <!-- 面包屑导航 -->
-  <div class="test2"">
+  <div class="test2">
   <el-breadcrumb separator-class="el-icon-arrow-right">
     <el-breadcrumb-item :to="{ path: '/home' }">首页></el-breadcrumb-item>
   </el-breadcrumb>
@@ -37,7 +37,7 @@
           <el-col :span="6"><div class="grid-content bg-purple">
             <el-card style="width: 220px;height: 75px;" :body-style="{ padding: '0px' }">
               <img src="../assets/icon/1.png" class="image">
-              <span class="mytext1"><el-button type="text">我的资料</el-button></span>
+              <span class="mytext1"><el-button @click="mydata" type="text">我的资料</el-button></span>
             </el-card>
           </div></el-col>
           <el-col :span="6"><div class="grid-content bg-purple">
@@ -70,9 +70,22 @@
           <el-col :span="6"><div class="grid-content bg-purple">
             <el-card style="width: 220px;height: 75px;" :body-style="{ padding: '0px' }">
               <img src="../assets/icon/6.png" class="image">
-              <span class="mytext1"><el-button type="text">在线签到</el-button></span>
+              <span class="mytext1"><el-button @click="getCode" type="text">扫码签到</el-button></span>
             </el-card>
           </div></el-col>
+          <el-dialog
+                  title="签到二维码"
+                  :visible.sync="dialogVisible"
+                  width="20%"
+                  :before-close="handleClose">
+            <div class="demo-image">
+                <el-image style="width: 180px; height: 180px;margin-left: 80px" :src="codeurl"></el-image>
+            </div>
+            <span slot="footer" class="dialog-footer">
+           <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          </span>
+          </el-dialog>
           <el-col :span="6"><div class="grid-content bg-purple">
             <el-card style="width: 220px;height: 75px;" :body-style="{ padding: '0px' }">
               <img src="../assets/icon/7.png" class="image">
@@ -116,12 +129,8 @@
         </el-card>
       </div></el-col>
     </el-row>
-
   </div>
-
-
   </div>
-
 </template>
 
 
@@ -168,9 +177,10 @@
 <script>
   import * as echarts from 'echarts'
   export default {
-    name: 'test2',
     data () {
       return {
+        codeurl:'', //二维码路由
+        dialogVisible:false,
         queryInfo: {
           query: "",
           pageNum: 1,
@@ -192,7 +202,7 @@
       }
     },
     mounted: function () {
-      this.getdataChart1();
+
     },
 
 
@@ -202,97 +212,19 @@
         console.log(row);
       },
 
-      async   getdataChart1(){
-        // const {data :res} = await this.$http.post("welcome/echart1"); //后端请求接口
-        var chartDom = document.getElementById('myChart1');
-        var myChart = echarts.init(chartDom);
-        var option;
-        setTimeout(function () {
-          option = {
-            legend: {},
-            tooltip: {
-              trigger: 'axis',
-              showContent: false
-            },
-            dataset: {
-              source: [
-                ['product', '2012', '2013', '2014', '2015', '2016', '2017'],
-                ['团队任务量', 56.5, 82.1, 88.7, 70.1, 53.4, 85.1],
-                ['个人任务量', 51.1, 51.4, 55.1, 53.3, 73.8, 68.7],
-                ['任务失败数', 40.1, 62.2, 69.5, 36.4, 45.2, 32.5],
-                ['任务成功数', 25.2, 37.1, 41.2, 18, 33.9, 49.1]
-              ]
-            },
-            xAxis: { type: 'category' },
-            yAxis: { gridIndex: 0 },
-            grid: { top: '55%' },
-            series: [
-              {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-              },
-              {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-              },
-              {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-              },
-              {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-              },
-              {
-                type: 'pie',
-                id: 'pie',
-                radius: '30%',
-                center: ['50%', '25%'],
-                emphasis: {
-                  focus: 'self'
-                },
-                label: {
-                  formatter: '{b}: {@2012} ({d}%)'
-                },
-                encode: {
-                  itemName: 'product',
-                  value: '2012',
-                  tooltip: '2012'
-                }
-              }
-            ]
-          };
-          myChart.on('updateAxisPointer', function (event) {
-            const xAxisInfo = event.axesInfo[0];
-            if (xAxisInfo) {
-              const dimension = xAxisInfo.value + 1;
-              myChart.setOption({
-                series: {
-                  id: 'pie',
-                  label: {
-                    formatter: '{b}: {@[' + dimension + ']} ({d}%)'
-                  },
-                  encode: {
-                    value: dimension,
-                    tooltip: dimension
-                  }
-                }
-              });
-            }
-          });
-          myChart.setOption(option);
-        });
-        option && myChart.setOption(option);
-      },
+      //进入我的资料页面
+       mydata(){
+         this.$router.push("/wxuser");
+       },
+       //获取二维码
+      async   getCode(){
+        // 调用post请求
+        this.dialogVisible = true;
+        const { data: res } = await this.$http.post("/api/ercode/getCodeUrl");
+        this.codeurl= res; // 将返回数据赋值
+      }
     }
+
   }
 </script>
 
