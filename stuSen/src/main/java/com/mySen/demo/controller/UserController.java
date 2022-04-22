@@ -13,7 +13,6 @@ import java.util.Map;
  * @param
  * @return
  */
-@CrossOrigin("http://localhost:8081")
 @RestController
 public class UserController {
 
@@ -67,6 +66,7 @@ public class UserController {
                 map.put("msg","用户账号已经被冻结");
             }else{
                 map.put("code",1);
+                map.put("user",user);
                 map.put("msg","登录成功");
             }
         }catch (Exception e){

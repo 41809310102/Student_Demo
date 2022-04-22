@@ -3,7 +3,9 @@ package com.mySen.demo.model;
 import com.mySen.demo.util.Createtableutil.Createtable;
 
 import java.sql.SQLException;
-
+/**
+ * Desc:成绩类
+ * */
 public class Subject {
     private int id;
     private int uid;

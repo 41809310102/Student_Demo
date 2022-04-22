@@ -1,0 +1,102 @@
+/* pages/message/message.wxss *//* pages/found/found.wxss */
+page{
+  background-color: #e4e4e4;
+}
+.box{
+  background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
+  height:85px;
+}
+.box text{
+  display: flex;
+  margin-top: 50px;
+  font-size: 17px;
+  font-weight: 400;
+  color: #ffff;
+  margin-left: 20px;
+}
+
+.topwindow{
+  margin-top: 10px;
+  width: 96%;
+  margin-left: 2%;
+  height: 170px;
+  background-color: #ffffff;
+  box-shadow: 0 0 1px 1px #ccc9c9;
+  border-radius: 3%;
+}
+
+.banner{ 
+  width:100%; 
+  border-radius: 5%;
+  height: 120px; }
+.banner swiper{
+   height: 100%;
+   width:100%;}
+.banner image{ 
+  width: 100%; 
+  height: 100%;
+}
+
+
+.topwindow .title{
+  display: flex;
+  font-size: 15px;
+  font-weight: 550;
+  color: rgb(7, 7, 7);
+  margin-left: 10px !important;
+  margin-top:10px;
+}
+.major{ white-space: nowrap; padding:10rpx ;background-color:#f3f0f01a;  margin-top: 35rpx; width: 100%;border-radius: 16rpx;}
+.major .box1{ text-align: center; width:180rpx; align-self: center; display: inline-block; border-radius: 16rpx;}
+.major .pic{width:80rpx; height: 80rpx;}
+.major .pic1{width:75rpx; height: 75rpx;}
+.major .txt{ font-size:30rpx; margin-top:2rpx;font-weight: 500;} 
+
+
+.massagebox{
+  width: 96%;
+  margin-left: 2%;
+  background-color: #ffffff;
+  margin-top:2px;
+  
+}
+
+.massagebox image{
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-top:10px;
+  margin-left: 5px;
+}
+
+.massagebox text{
+  display: flex;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: -60px;
+  margin-left: 70px;
+}
+
+.massagebox .massage{
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 10px;
+  color: rgb(45, 121, 219);
+  margin-left: 70px;
+}
+
+
+.massagebox .time{
+
+  font-size: 16px;
+  font-weight: 400;
+  width: 200px;
+  margin-top: 2%;
+  color: rgb(184, 179, 179);
+}
+
+.massagebox .hot{
+  font-weight: 400;
+  margin-top: -5%;
+  margin-left: 89%;
+}

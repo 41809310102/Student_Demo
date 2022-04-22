@@ -1,0 +1,17 @@
+
+
+<view class="topwindow">
+  <text class="title">签到服务</text>
+  <scroll-view class="major" scroll-x>
+    <view class="box1" bindtap="scanCodeEvent1">
+        <image class="pic1" src="../../image/1.png"/>
+        <view class="txt">扫码签到</view>
+      </view>   
+      <view  class="box1" bindtap="scanCodeEvent1">
+        <image class="pic" src="../../image/2.png"/>
+        <view class="txt">扫码补签</view>
+      </view>
+</scroll-view>
+</view>
+
+

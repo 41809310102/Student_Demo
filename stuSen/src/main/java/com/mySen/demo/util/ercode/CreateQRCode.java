@@ -38,7 +38,7 @@ public class CreateQRCode {
             int width = bitMatrix.getWidth();
             int height = bitMatrix.getHeight();
 
-            String localpath = "C:/ercodepic/"+username+openid+"."+code.getFormat();
+            String localpath = "F:/ercodepic/"+username+openid+"."+code.getFormat();
             Path file = new File(localpath).toPath();        //设置路径
             MatrixToImageWriter.writeToPath(bitMatrix, code.getFormat(), file,config);       //输出图像
             OBSUtils obs = new OBSUtils();//调用华为obs对象存储服务

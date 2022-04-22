@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.mySen.demo.dao.SignMapper">
+    <insert id="addSigninfo">
+     INSERT INTO t_sign
+    (uid,local,uname,cardid,signtime,major,addsigntime,isdelect)  VALUE
+    (#{uid},#{local},#{uname},#{cardid},#{signtime},#{major},#{addsigntime},#{isdelect})
+    </insert>
+
+    <select id="selectSign" resultType="com.mySen.demo.model.Sign">
+     SELECT * FROM  t_sign WHERE  uid=#{uid} order by id desc
+    </select>
+
+
+</mapper>
