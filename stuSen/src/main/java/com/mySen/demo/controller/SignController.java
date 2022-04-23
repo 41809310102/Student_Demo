@@ -5,12 +5,11 @@ import com.mySen.demo.model.User;
 import com.mySen.demo.service.IsSignservice;
 import com.mySen.demo.service.IsUserservice;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import sun.awt.image.ImageWatched;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,7 +54,23 @@ public class SignController {
 
     /**
      * @param
-     * @Desc 用户登录
+     * @Desc 获取用户的打卡记录
      * @return map
      */
+    @GetMapping("api/Sign/getUserSignlog")
+    public  Map<String,Object> getSignlog(@RequestParam int id){
+        Map<String,Object> map = new HashMap<>();
+        try{
+            List<Sign> log = signservice.selectSign(id);
+            map.put("log",log);
+            map.put("code",1);
+            map.put("msg","打卡记录刷新成功!");
+        }catch (Exception e){
+            System.out.println(e.toString());
+            map.put("code",0);
+            map.put("msg","打卡记录刷新成功!");
+        }
+
+        return map;
+    }
 }

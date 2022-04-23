@@ -124,13 +124,30 @@ public class Createtable {
         System.out.println(Fromstring);
     }
 
-    public void createupdateTable(String[] classdata){
-     String Fromsql = "UPDATE FROM vaccdb SET"+"\n";
+    public void createupdateTable(String[] classdata,String tablename){
+     String Fromsql = "UPDATE "+tablename+" SET "+"\n";
         if(classdata.length!=0){
             for(int i = 0;i<classdata.length-1;i++){
                 Fromsql +=classdata[i]+"=#{"+classdata[i]+"},";
             }
             Fromsql+=classdata[classdata.length-1]+"=#{"+classdata[classdata.length-1]+"}"+" WHERE id=#{id}";
+            System.out.println(Fromsql);
+        }
+    }
+
+    public void createinsertTable(String[] classdata,String tablename){
+        String Fromsql = "INSERT INTO "+tablename+"\n"+"(";
+        if(classdata.length!=0){
+            for(int i = 0;i<classdata.length-1;i++){
+                Fromsql +=classdata[i]+",";
+            }
+            Fromsql+=classdata[classdata.length-1]+") VALUE "+"\n"+"(";
+            if(classdata.length!=0){
+                for(int i = 0;i<classdata.length-1;i++){
+                    Fromsql +="#{"+classdata[i]+"},";
+                }
+                Fromsql+="#{"+classdata[classdata.length-1]+"})";
+            }
             System.out.println(Fromsql);
         }
     }

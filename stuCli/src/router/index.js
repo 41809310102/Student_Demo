@@ -10,8 +10,8 @@ import coldroom from '../components/room/coldroom.vue'
 import isout from '../components/room/isout.vue'
 import Aiadmin from '../components/room/Aiadmin.vue'
 import wxuser from '../components/useradmin/wxuser.vue'
-import doctor from '../components/useradmin/doctor.vue'
-import apply from '../components/useradmin/apply.vue'
+import mygrade from '../components/useradmin/mygrade.vue'
+import mylog from '../components/useradmin/mylog.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -51,8 +51,8 @@ const routes = [
     redirect: '/welcome',
     children: [
       { path:'/welcome', component: Welcome},
-      { path:'/apply', component:apply},
-      { path:'/doctor', component: doctor},
+      { path:'/mylog', component:mylog},
+      { path:'/mygrade', component: mygrade},
       { path:'/wxuser', component: wxuser},
     ],
   },

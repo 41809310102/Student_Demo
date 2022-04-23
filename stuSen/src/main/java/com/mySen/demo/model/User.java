@@ -30,6 +30,6 @@ public class User {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         User u = new User();
         Createtable t = new Createtable();
-        t.createupdateTable(t.getClassdataName(u));
+
     }
 }

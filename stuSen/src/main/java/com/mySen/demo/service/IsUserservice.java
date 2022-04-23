@@ -18,4 +18,8 @@ public interface IsUserservice {
     public int updateofheadpic(String pic,int id);
 
     public User selectUserbyid(int id);
+
+
+
+
 }

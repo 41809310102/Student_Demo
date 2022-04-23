@@ -43,14 +43,14 @@
           <el-col :span="6"><div class="grid-content bg-purple">
             <el-card style="width: 220px;height: 75px;" :body-style="{ padding: '0px' }">
               <img src="../assets/icon/2.png" class="image">
-              <span class="mytext1"><el-button type="text">我的成绩</el-button></span>
+              <span class="mytext1"><el-button type="text" @click="mygrade">我的成绩</el-button></span>
               <span></span>
             </el-card>
           </div></el-col>
           <el-col :span="6"><div class="grid-content bg-purple">
             <el-card style="width: 220px;height: 75px;" :body-style="{ padding: '0px' }">
               <img src="../assets/icon/3.png" class="image">
-              <span class="mytext1"><el-button type="text">获奖记录</el-button></span>
+              <span class="mytext1"><el-button type="text" @click="mylog">获奖记录</el-button></span>
             </el-card>
           </div></el-col>
           <el-col :span="6"><div class="grid-content bg-purple">
@@ -107,9 +107,40 @@
                   <span>签到记录</span>
                   <el-button style="float: right; padding: 3px 0" type="text">补卡</el-button>
                 </div>
-                <div v-for="o in 4" :key="o" class="text item">
-                  {{'2022-4-21 ' + o }}
-                </div>
+                <template>
+                  <el-table
+                          :data="signlog"
+                          style="width: 100%"
+                          :row-class-name="tableRowClassName">
+                    <el-table-column
+                            prop="signtime"
+                            label="签到时间"
+                            width="180">
+                      <template slot-scope="scope">
+                        <span v-model="scope.row.signtime" slot="reference" style="color: red">{{scope.row.signtime}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="uname"
+                            label="姓名"
+                            width="100">
+                    </el-table-column>
+                    <el-table-column
+                            label="签到位置">
+                      <template slot-scope="scope">
+                        <el-popover
+                                placement="top-start"
+                                title="签到位置"
+                                width="100"
+                                trigger="hover"
+                                effect="dark" >
+                          {{scope.row.local}}
+                          <span v-model="scope.row.local" slot="reference" style="color:blue">{{scope.row.local| ellipsis}}</span>
+                        </el-popover>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </template>
               </el-card>
             </div>
             </el-col>
@@ -119,9 +150,23 @@
                   <span>活动信息</span>
                   <el-button style="float: right; padding: 3px 0" type="text">刷新</el-button>
                 </div>
-                <div v-for="o in 4" :key="o" class="text item">
-                  {{'2022-4-21 ' + o }}
-                </div>
+                <div class="block">
+                  <div class="radio">
+                    排序：
+                    <el-radio-group v-model="reverse">
+                      <el-radio :label="true">倒序</el-radio>
+                      <el-radio :label="false">正序</el-radio>
+                    </el-radio-group>
+                  </div>
+                    <el-timeline :reverse="reverse">
+                      <el-timeline-item
+                              v-for="(activity, index) in activities"
+                              :key="index"
+                              :timestamp="activity.timestamp">
+                        {{activity.content}}
+                      </el-timeline-item>
+                    </el-timeline>
+                  </div>
               </el-card>
             </div>
             </el-col>
@@ -175,11 +220,12 @@
 </style>
 
 <script>
-  import * as echarts from 'echarts'
+
   export default {
     data () {
       return {
         codeurl:'', //二维码路由
+        signlog:[],//签到记录
         dialogVisible:false,
         queryInfo: {
           query: "",
@@ -187,6 +233,20 @@
           pageSize: 4,
 
         },
+        reverse: true,
+        activities: [{
+          content: '活动按期开始',
+          timestamp: '2018-04-15'
+        }, {
+          content: '通过审核',
+          timestamp: '2018-04-13'
+        }, {
+          content: '创建成功',
+          timestamp: '2018-04-11'
+        }, {
+          content: '创建成功',
+          timestamp: '2018-04-11'
+        }],
         labelPosition: 'right',
         formLabelAlign: {
           name: '',
@@ -202,10 +262,11 @@
       }
     },
     mounted: function () {
-
     },
 
-
+    created() {
+      this.getlog();
+    },
 
     methods: {
       handleClick(row) {
@@ -216,12 +277,41 @@
        mydata(){
          this.$router.push("/wxuser");
        },
+      //进入我的成绩界面
+       mygrade(){
+        this.$router.push("/mygrade");
+      },
+      //进入我的获奖界面
+      mylog(){
+        this.$router.push("/mylog");
+      },
        //获取二维码
       async   getCode(){
         // 调用post请求
         this.dialogVisible = true;
         const { data: res } = await this.$http.post("/api/ercode/getCodeUrl");
         this.codeurl= res; // 将返回数据赋值
+      },
+
+      //获取用户打卡记录
+      async   getlog(){
+        // 调用post请求
+        const { data: res } = await this.$http.get("api/Sign/getUserSignlog?id="+window.sessionStorage.getItem('id'));
+        if(res.code==1){
+          this.signlog= res.log; // 将返回数据赋值
+        }else{
+          this.$message.error("获取签到记录失败");
+        }
+      },
+    },
+    //只显示前10个字符
+    filters:{
+      ellipsis(value){
+        if (!value) return '';
+        if (value.length > 8) {
+          return value.slice(0,8) + '...'
+        }
+        return value
       }
     }
 
