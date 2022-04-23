@@ -73,7 +73,7 @@
                                   <span style="margin-top: 10px">班级:{{user.major}}</span><br>
                               </div>
                               <div style="margin-top: 5px;color: #04befe">
-                                  <span style="margin-top: 10px">学院:{{user.school_group}}</span><br>
+                                  <span style="margin-top: 10px">学院:{{user.shool_group}}</span><br>
                               </div>
                       </div></el-col>
                   </el-row>
@@ -82,7 +82,7 @@
                       <div>
                           <el-tag type="success">{{user.role}}</el-tag>
                       </div>
-                      <span style="font-weight:500;font-size: 14px;color: #ee9900">自我介绍:青春是一个短暂的美梦, 当你醒来时, 它早已消失无踪</span>
+                      <span style="font-weight:500;font-size: 14px;color: #ee9900">{{user.desction}}}</span>
                   </el-row>
                   <el-tabs v-model="activeName" @tab-click="handleClick">
                       <el-tab-pane label="其他信息" name="first">
@@ -106,7 +106,7 @@
                                   <el-tag type="success">账号正常</el-tag></div></span><br>
                           </div>
                           <div style="color: #04befe">
-                              <span>第二课堂分:{{user.username}}</span><br>
+                              <span>第二课堂分:{{user.grade}}</span><br>
                           </div>
                       </el-tab-pane>
                       <el-tab-pane label="资料修改" name="second">
@@ -128,7 +128,7 @@
                                       <el-input v-model="sizeForm.age" style="width: 120px"></el-input>
                                   </el-form-item>
                                   <el-form-item label="学院:">
-                                      <el-select v-model="sizeForm.school_group" placeholder="请选择活动区域">
+                                      <el-select v-model="sizeForm.shool_group" placeholder="请选择活动区域">
                                           <el-option label="管理学院" value="管理学院"></el-option>
                                           <el-option label="理学院" value="理学院"></el-option>
                                           <el-option label="计算机科学学院" value="计算机科学学院"></el-option>
@@ -208,21 +208,10 @@
                 src:"https://s.cn.bing.net/th?id=OIP-C.52HK9IvoYOH24_rR0KWSdwHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2",
                 desction:"陕西科技大学是我国西部地区唯一一所以轻工为特色的多科性大学，是国家“中西部高校基础能力建设工程”建设高校，是“十二五”期间陕西省重点建设的高水平大学",
                 value:3.2,
+                url:"",//上传图片地址
                 activeName: 'first',
                 user:{
-                    role:"普通学生",
-                    username:"王小明",
-                    cardid:"41809310102",
-                    major:"计算机科学与技术",
-                    school_group:"计算机科学学院",
-                    age:14,
-                    pic:"",
-                    hobby:"计算机",
-                    desction:"青春是一个短暂的美梦, 当你醒来时, 它早已消失无踪",
-                    phone:"18891636436",
-                    association:"图灵社团",
-                    isdelect:0,
-                    sex:"男",
+
                 },
                 // 请求数据
                 queryInfo: {
@@ -236,6 +225,7 @@
         },
         created() {
             this.getUserdatabyid();
+            this.url = "http://localhost:9002/api/user/updateUserpic?id="+window.sessionStorage.getItem('id');
         },
         methods: {
 
@@ -247,9 +237,13 @@
                 this.sizeForm = res;
             },
 
-            onSubmit() {
-                console.log('submit!');
-                this.$message.success("修改成功")
+            async onSubmit() {
+                const {data: res} = await this.$http.post("api/user/updateUser", this.sizeForm);
+                if(res=="success"){
+                    this.$message.success("修改成功")
+                }else{
+                    this.$message.error("修改成功")
+                }
             },
 
             //头像上传
