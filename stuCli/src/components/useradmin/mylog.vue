@@ -7,32 +7,36 @@
       </el-breadcrumb>
       <el-card style="height: 200px">
           <el-carousel :interval="6000" type="card" height="150px">
-              <el-carousel-item v-for="item in img" :key="item">
-                  <img :src="item.img" style="height: 180px;"  alt="">
+              <el-carousel-item v-for="(item) in img" :key="item">
+                  <img :src="item.imgs" style="height: 310px;">
               </el-carousel-item>
           </el-carousel>
       </el-card>
       <el-card shadow="true" style="margin-top: 4px">
           <el-row :gutter="25">
               <el-col :span="8">
-                  <!-- 搜索添加 -->
+                  <!-- 搜索 -->
                   <el-input placeholder="请输入获奖名称" v-model="queryInfo.query" clearable @clear="getOrderdata">
                       <el-button slot="append" icon="el-icon-search" @click="getOrderdata"></el-button>
                   </el-input>
+              </el-col>
+              <el-col :span="4">
+                  <!-- 添加 -->
+                  <el-button type="primary" @click="add">添加奖励</el-button>
               </el-col>
           </el-row>
       </el-card>
       <el-card>
           <div style="margin-left:1%;margin-right:1%">
               <el-row>
-                  <el-col :span="4" v-for="(item) in 8" :key="item.classId" :offset="1" >
-                      <div style="margin-top:15px">
-                          <el-card :body-style="{ padding: '0px'}" shadow="hover">
-                              <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+                  <el-col :span="4" v-for="(item) in awardlist" :key="item">
+                      <div style="margin-top:15px;margin-left:2%;">
+                          <el-card :body-style="{ padding: '0px'}" shadow="hover" style="height: 250px">
+                             <el-image :src="item.pic" style="height: 80%;"></el-image>
                               <div>
-                                  <span style="color: #ee9900">获奖名称:</span><br>
+                                  <span style="color: #ee9900;font-size: 15px">获奖名称:{{item.aname}}</span><br>
                                   <div class="bottom clearfix">
-                                      <time class="time"><strong>获得时间:</strong>{{item.classCreatetime}}</time>
+                                      <time class="time"><strong>获得时间:</strong>{{item.gettime}}</time>
                                       <el-button type="text" class="button" @click="add(item)">查看</el-button>
                                   </div>
                               </div>
@@ -57,36 +61,47 @@
       </el-card>
       <!-- 分页 -->
 
-      <!-- 获奖详细
       <el-drawer
-              title="用户档案详细"
+              title="奖励申报"
               :visible.sync="drawer"
               :direction="direction"
               :before-close="handleClose">
-          <el-form :label-position="labelPosition" label-width="130px" :model="formLabelAlign">
-              <el-form-item label="姓名:">
-                  <el-input v-model="formLabelAlign.username" disabled style="width: 200px"></el-input>
+              <el-form :label-position="labelPosition" label-width="130px" :model="formLabelAlign">
+              <el-form-item label="奖励名称:">
+                  <el-input v-model="formLabelAlign.aname" style="width: 200px"></el-input>
               </el-form-item>
-              <el-form-item label="证件类型:">
-                  <el-input v-model="formLabelAlign.idtype" disabled style="width: 200px"></el-input>
+              <el-form-item label="获取时间:">
+                  <el-input v-model="formLabelAlign.gettime"  style="width: 200px"></el-input>
               </el-form-item>
-              <el-form-item label="证件号:">
-                  <el-input v-model="formLabelAlign.idnum" disabled style="width: 200px"></el-input>
+             <el-form-item label="级别:">
+                                      <el-select v-model="formLabelAlign.level" placeholder="请选择奖励级别">
+                                          <el-option label="A类" value="A类"></el-option>
+                                          <el-option label="B类" value="B类"></el-option>
+                                          <el-option label="C类" value="C类"></el-option>
+                                          <el-option label="D类" value="D类"></el-option>
+                                          <el-option label="E类" value="E类"></el-option>
+                                          <el-option label="F类" value="F类"></el-option>
+                                      </el-select>
+                                  </el-form-item>
+              <el-form-item label="图片:">
+                       <el-upload class="upload-demo"
+                                              :action="datas"
+                                              :on-preview="handlePreview"
+                                              :on-remove="handleRemove"
+                                              :file-list="fileList"
+                                              :on-success="handleAvatarSuccess"
+                                              :limit="1"
+                                              list-type="picture">
+                                          <el-button size="small" type="primary">点击上传</el-button>
+                                          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                                      </el-upload>
               </el-form-item>
-              <el-form-item label="性别:">
-                  <el-input v-model="formLabelAlign.sex" disabled style="width: 200px"></el-input>
-              </el-form-item>
-              <el-form-item label="出生日期:">
-                  <el-input v-model="formLabelAlign.birthday" disabled style="width: 200px"></el-input>
-              </el-form-item>
-              <el-form-item label="手机号:">
-                  <el-input v-model="formLabelAlign.phone" disabled style="width: 200px"></el-input>
-              </el-form-item>
-              <el-form-item label="现居住地址:">
-                  <el-input v-model="formLabelAlign.nowlivelocal" disabled style="width: 200px"></el-input>
-              </el-form-item>
+                  <el-form-item size="large">
+                      <el-button type="primary" @click="onSubmit">确定</el-button>
+                      <el-button @click="">取消</el-button>
+                  </el-form-item>
           </el-form>
-      </el-drawer>-->
+      </el-drawer>
   </div>
 </template>
 
@@ -108,6 +123,7 @@
 
     .image {
         width: 90%;
+        height: 80px;
         display: block;
     }
 
@@ -152,38 +168,33 @@
     export default {
         data() {
             return {
-              Ordertable:[],
                 // 请求数据
+                datas:"",
                 queryInfo: { //参数控制
                     query: "",
                     pageNum: 1,
                     pageSize: 8,
                 },
-                total:8,
+                total:0,
+                awardlist:[],
+                fileList: [],
                 drawer:false,
                 direction: 'rtl',
                 labelPosition: 'right',
-                formLabelAlign1:{
-                    username: '',
-                    idtype: '',
-                    idnum: '',
-                    sex: '',
-                    birthday: '',
-                    phone: '',
-                    nowlivelocal: '',
-                    homeinfor: '',
-                    persontype: '',
-                    worklocal: '',
+                formLabelAlign:{
+                    uid:0,
+                    pic:"",
+                    aname:"",
+                    gettime:"",
+                    level:"",
+
                 },
                 img:[
-                    {
-                        img:"https://tse1-mm.cn.bing.net/th/id/R-C.972ea47c97f3aa3e1d678d73d15886af?rik=H1g6X3XtDI0B%2bw&riu=http%3a%2f%2fbpic.588ku.com%2fback_pic%2f03%2f56%2f74%2f94579ef3f56c1f8.jpg!%2ffh%2f300%2fquality%2f90%2funsharp%2ftrue%2fcompress%2ftrue&ehk=EaRqWCB8%2bFiS01DHkr%2fzthgRXcZBEQRyMiskOdDjZI4%3d&risl=&pid=ImgRaw&r=0"
+                    {imgs:"https://tse1-mm.cn.bing.net/th/id/R-C.972ea47c97f3aa3e1d678d73d15886af?rik=H1g6X3XtDI0B%2bw&riu=http%3a%2f%2fbpic.588ku.com%2fback_pic%2f03%2f56%2f74%2f94579ef3f56c1f8.jpg!%2ffh%2f300%2fquality%2f90%2funsharp%2ftrue%2fcompress%2ftrue&ehk=EaRqWCB8%2bFiS01DHkr%2fzthgRXcZBEQRyMiskOdDjZI4%3d&risl=&pid=ImgRaw&r=0"
                     },
-                    {
-                        img:"https://img95.699pic.com/photo/40032/7537.jpg_wh300.jpg!/fh/300/quality/90"
+                    {imgs:"https://img95.699pic.com/photo/40032/7537.jpg_wh300.jpg!/fh/300/quality/90"
                     },
-                    {
-                        img:"https://img.tukuppt.com/ad_preview/00/78/50/60b76ff2006bc.jpg!/fw/980"
+                    {imgs:"https://img.tukuppt.com/ad_preview/00/78/50/60b76ff2006bc.jpg!/fw/980"
                     }
                 ]
 
@@ -192,15 +203,20 @@
             }
         },
         created() {
-            //this.getOrderdata();
+            this.getawarddata();
+            this.datas = "http://localhost:9002/api/Award/uploadAwardpics?id="+
+                window.sessionStorage.getItem('id');
+
         },
         methods: {
 
-           async  getOrderdata(){
+           async  getawarddata(){
                  // 调用post请求
-                 const { data: res } = await this.$http.post("api/user/toOrder",this.queryInfo);
-                 this.Ordertable = res.data; // 将返回数据赋值
-                 this.total = res.numbers; // 总个数
+                 const { data: res } = await this.$http.get("api/Award/getmyAwardofid?id="+window.sessionStorage.getItem('id'));
+                 this.awardlist = res.data; // 将返回数据赋值
+               this.total = res.numbers; // 总个数
+               //处理路径
+               console.log("处理路径")
             },
             // 监听pageSize改变的事件
             handleSizeChange(newSize) {
@@ -215,26 +231,48 @@
 
             handleClose() {
               this.drawer = false;
-              this.drawer1 = false;
             },
 
-            async  getUserdata(userid){
-                this.drawer = true;
+            add(){
+                this.drawer =true;
+            },
+
+            async  onSubmit(){
                 // 调用post请求
-                const { data: res } = await this.$http.get("api/wxuser/dangan?userid="+userid);
-                if(res!=null){
-                    this.formLabelAlign = res[0];
-                    console.log(res)
+                this.formLabelAlign.uid = window.sessionStorage.getItem("id");
+                const { data: res } = await this.$http.post("api/Award/addsubject",this.formLabelAlign);
+                if(res.code==1){
+                    this.$message.success(res.msg)
+                    this.getawarddata();
+                }else{
+                    this.$message.error(res.msg)
                 }
             },
-            async  getDoctorid(doctorid){
-                this.drawer1 = true;
+
+
+            async  getOrderdata(){
                 // 调用post请求
-                const { data: res } = await this.$http.get("api/doctor/dangan?doctorid="+doctorid);
-                if(res!=null){
-                    this.formLabelAlign1 = res[0];
-                    console.log(res)
+                const { data: res } = await this.$http.get("api/Award/getselectAwardCheck?id="+window.sessionStorage.getItem("id")
+                +"&aname="+this.queryInfo.query);
+                if(res.code==1){
+                    this.awardlist = res.data; // 将返回数据赋值
+                    this.total = res.numbers; // 总个数
+                }else{
+                    this.$message.error(res.msg)
                 }
+            },
+            //头像上传
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            //头像上传
+            handlePreview(file) {
+                console.log(file);
+            },
+            //上传头像成功显示
+            handleAvatarSuccess(res, file) {
+                this.$message.success("上传成功")
+                this.formLabelAlign.pic= res;
             }
         },
     }

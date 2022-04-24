@@ -9,7 +9,7 @@
         <!-- 卡片视图区 -->
         <el-card>
             <el-row :gutter="25">
-                <el-col :span="2">
+                <el-col :span="3">
                     <el-dropdown split-button type="primary" @command="handleCommand">
                         {{queryInfo.type}}
                         <el-dropdown-menu slot="dropdown">
@@ -20,7 +20,7 @@
                         </el-dropdown-menu>
                     </el-dropdown>
                 </el-col>
-                <el-col :span="2">
+                <el-col :span="3">
                     <el-dropdown split-button type="primary" @command="handleCommand">
                         {{queryInfo.xid}}
                         <el-dropdown-menu slot="dropdown">
@@ -29,7 +29,7 @@
                         </el-dropdown-menu>
                     </el-dropdown>
                 </el-col>
-                <el-col :span="2">
+                <el-col :span="3">
                     <el-button  type="success" round @click="seacher">确定</el-button>
                 </el-col>
                 <el-col :span="2">

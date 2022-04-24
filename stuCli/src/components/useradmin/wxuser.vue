@@ -6,7 +6,7 @@
         <el-breadcrumb-item>我的资料</el-breadcrumb-item>
     </el-breadcrumb>
         <el-row :gutter="10">
-            <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="3"><div class="grid-content bg-purple">
+            <el-col :xs="2" :sm="3" :md="4" :lg="4" :xl="3"><div class="grid-content bg-purple">
                 <el-card shadow="true" style="height: 650px">
                     <div class="schoolpic">
                         <el-image :src="src" style="width: 120px; height: 120px;margin-left: 28px"></el-image>
@@ -26,7 +26,7 @@
                 </el-card>
 
             </div></el-col>
-            <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="9"><div class="grid-content bg-purple">
+            <el-col :xs="6" :sm="8" :md="10" :lg="12" :xl="9"><div class="grid-content bg-purple">
               <el-card shadow="true" style="height: 650px;">
                   <el-row :gutter="20">
                       <el-col :span="8"><div class="grid-content bg-purple">
@@ -128,7 +128,7 @@
                                       <el-input v-model="sizeForm.age" style="width: 120px"></el-input>
                                   </el-form-item>
                                   <el-form-item label="学院:">
-                                      <el-select v-model="sizeForm.shool_group" placeholder="请选择活动区域">
+                                      <el-select v-model="sizeForm.shool_group" placeholder="请选择学院">
                                           <el-option label="管理学院" value="管理学院"></el-option>
                                           <el-option label="理学院" value="理学院"></el-option>
                                           <el-option label="计算机科学学院" value="计算机科学学院"></el-option>
@@ -158,8 +158,8 @@
               </el-card>
 
             </div></el-col>
-
         </el-row>
+
     </div>
 </template>
 

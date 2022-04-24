@@ -153,6 +153,7 @@ export default {
          if (res.code==1) {
              window.sessionStorage.setItem('user',res.user.username); // session 放置
              window.sessionStorage.setItem('id',res.user.id); // session 放置
+             //window.sessionStorage.setItem('cardid',res.user.cardid); // session 放置
            window.sessionStorage.setItem('flag','ok'); // session 放置
            this.$message.success(res.msg);
            this.$router.push({ path: "/home"});
