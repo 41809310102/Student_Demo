@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.mySen.demo.dao.ActionMapper">
+    <insert id="addActioninfo">
+     INSERT INTO t_action
+     (actiontime,starttime,endtime,title,jifen,limitnum,actionUser) VALUE
+    (#{actiontime},#{starttime},#{endtime},#{title},#{jifen},#{limitnum},#{actionUser})
+    </insert>
+
+
+    <select id="selectActiontbyid" resultType="com.mySen.demo.model.Action">
+        SELECT * FROM t_action where id=#{id}
+    </select>
+
+
+    <select id="selectActiontall"  resultType="com.mySen.demo.model.Action">
+        SELECT * FROM t_action where id>0
+    </select>
+
+    <select id="selectActionbycheck"  resultType="com.mySen.demo.model.Action">
+        SELECT * FROM t_action where title like #{title}
+    </select>
+
+
+</mapper>
