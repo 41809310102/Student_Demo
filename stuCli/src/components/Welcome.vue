@@ -56,7 +56,7 @@
           <el-col :span="6"><div class="grid-content bg-purple">
             <el-card style="width: 220px;height: 75px;" :body-style="{ padding: '0px' }">
               <img src="../assets/icon/4.png" class="image">
-              <span class="mytext1"><el-button type="text">我的申请</el-button></span>
+              <span class="mytext1"><el-button @click="myapply" type="text">我的活动</el-button></span>
             </el-card>
           </div></el-col>
         </el-row>
@@ -284,6 +284,10 @@
       //进入我的获奖界面
       mylog(){
         this.$router.push("/mylog");
+      },
+      //进入我的活动界面
+      myapply(){
+        this.$router.push("/myapply");
       },
        //获取二维码
       async   getCode(){
