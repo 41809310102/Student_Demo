@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.mySen.demo.dao.ApplyMapper">
+    <insert id="addapply">
+    INSERT INTO t_apply
+    (aid,uid,state) VALUE (#{aid},#{uid},#{state})
+    </insert>
+
+
+    <select id="selectApplyofid" resultType="com.mySen.demo.model.Apply">
+        SELECT  p.id,p.uid,p.aid,p.state,a.title,a.starttime,a.endtime,a.jifen,a.limitnum,
+        a.actionuser
+        FROM t_apply p ,t_action a
+        where p.uid=#{id} order by p.id desc
+    </select>
+
+
+    <delete id="delApply">
+        delete from t_apply whereuid=#{id}
+    </delete>
+
+
+    <update id="updatestate">
+        update t_apply  set  state=#{state} where id=#{id}
+    </update>
+
+
+</mapper>
+
