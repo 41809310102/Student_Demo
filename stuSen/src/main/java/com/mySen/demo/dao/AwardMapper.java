@@ -22,4 +22,8 @@ public interface AwardMapper {
 
     public int uploadpic(int uid,String pic);
 
+    public int updateAward(Award award);
+
+    public int deleteAwerd(int id);
+
 }

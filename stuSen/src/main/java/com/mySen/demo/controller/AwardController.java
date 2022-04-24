@@ -131,7 +131,57 @@ public class AwardController {
         return path;
     }
 
-     //保存文件
+    /**
+     * @param
+     * @Desc 奖励数据修改接口
+     * @return map
+     */
+    @PostMapping("api/Award/upsdateAward")
+    public Map<String,Object> upsdateAward(@RequestBody Award award){
+        Map<String,Object> map = new HashMap<>();
+        System.out.println(award.toString());
+        try{
+            int i =isAwardservice.updateAwardofid(award);
+            if(i>0){
+                map.put("code",1);
+                map.put("msg","修改成功");
+            }else{
+                map.put("code",0);
+                map.put("msg","修改失败!");
+            }
+        }catch (Exception e){
+            System.out.println(e.toString());
+            map.put("code",-1);
+            map.put("msg","服务器错误！");
+        }
+        return map;
+    }
+    /**
+     * @param
+     * @Desc 奖励数据删除接口
+     * @return map
+     */
+    @GetMapping("api/Award/deleAward")
+    public Map<String,Object> deleAward(@RequestParam int id){
+        System.out.println("====="+id);
+        Map<String,Object> map = new HashMap<>();
+        try{
+            int i =isAwardservice.deleteAwerdofid(id);
+            if(i>0){
+                map.put("code",1);
+                map.put("msg","删除成功");
+            }else{
+                map.put("code",0);
+                map.put("msg","删除失败!");
+            }
+        }catch (Exception e){
+            System.out.println(e.toString());
+            map.put("code",-1);
+            map.put("msg","服务器错误！");
+        }
+        return map;
+    }
+    //保存文件
     private void savePic(InputStream inputStream,String path, String fileName) {
 
         OutputStream os = null;

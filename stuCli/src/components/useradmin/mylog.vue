@@ -37,7 +37,8 @@
                                   <span style="color: #ee9900;font-size: 15px">获奖名称:{{item.aname}}</span><br>
                                   <div class="bottom clearfix">
                                       <time class="time"><strong>获得时间:</strong>{{item.gettime}}</time>
-                                      <el-button type="text" class="button" @click="add(item)">查看</el-button>
+                                      <el-button type="text" class="button" @click="delitem(item)">删除</el-button>
+                                      <el-button type="text" class="button" @click="showitem(item)">查看</el-button>
                                   </div>
                               </div>
                           </el-card>
@@ -59,6 +60,36 @@
               </div>
           </div>
       </el-card>
+
+      <el-dialog title="奖励详情" :visible.sync="dialogFormVisible" width="20%">
+          <el-form :model="form">
+              <el-form-item label="奖励名称">
+                  <el-input v-model="form.aname" autocomplete="off" style="width: 200px"></el-input>
+              </el-form-item>
+              <el-form-item label="获奖等级">
+                  <el-select v-model="form.level" placeholder="" style="width: 200px">
+                      <el-option label="A类" value="A类"></el-option>
+                      <el-option label="B类" value="B类"></el-option>
+                      <el-option label="C类" value="C类"></el-option>
+                      <el-option label="D类" value="D类"></el-option>
+                      <el-option label="E类" value="E类"></el-option>
+                      <el-option label="F类" value="F类"></el-option>
+                  </el-select>
+              </el-form-item>
+              <el-form-item label="获奖时间">
+                  <el-input v-model="form.gettime" autocomplete="off" style="width: 200px"></el-input>
+              </el-form-item>
+              <el-form-item label="获奖分数">
+                  <el-input v-model="form.getgrade" disabled autocomplete="off" style="width: 200px"></el-input>
+              </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="updateAward">保存修改</el-button>
+          </div>
+      </el-dialog>
+
+
       <!-- 分页 -->
 
       <el-drawer
@@ -98,7 +129,7 @@
               </el-form-item>
                   <el-form-item size="large">
                       <el-button type="primary" @click="onSubmit">确定</el-button>
-                      <el-button @click="">取消</el-button>
+                      <el-button @click="drawer=false">取消</el-button>
                   </el-form-item>
           </el-form>
       </el-drawer>
@@ -168,7 +199,9 @@
     export default {
         data() {
             return {
-                // 请求数据
+                //
+                formLabelWidth:100,
+                dialogFormVisible:false,
                 datas:"",
                 queryInfo: { //参数控制
                     query: "",
@@ -196,9 +229,10 @@
                     },
                     {imgs:"https://img.tukuppt.com/ad_preview/00/78/50/60b76ff2006bc.jpg!/fw/980"
                     }
-                ]
+                ],
+                form:{
 
-
+                }
 
             }
         },
@@ -232,9 +266,43 @@
             handleClose() {
               this.drawer = false;
             },
-
+            //添加窗口打开
             add(){
                 this.drawer =true;
+            },
+
+            async updateAward() {
+                const {data: res} = await this.$http.post("api/Award/upsdateAward",this.form);
+                if (res.code == 1) {
+                    this.$message.success(res.msg)
+                    this.getawarddata();
+                } else {
+                    this.$message.error(res.msg)
+                }
+            },
+            //查看详情
+            showitem(item) {
+                this.dialogFormVisible = true;
+                this.form = item;
+            },
+            //删除
+            async delitem(item) {
+                const confirmResult = await this.$confirm('是否确认删除该奖励?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).catch(err => err)
+                // 成功删除为confirm 取消为 cancel
+                if (confirmResult != 'confirm') {
+                    return this.$message.info("已取消操作");
+                }
+                const { data: res } = await this.$http.get("api/Award/deleAward?id="+item.id);
+                if(res.code==1){
+                    this.$message.success(res.msg)
+                    this.getawarddata();
+                }else{
+                    this.$message.error(res.msg)
+                }
             },
 
             async  onSubmit(){

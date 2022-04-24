@@ -12,13 +12,13 @@
 
 
     <select id="selectAwardtbyid" resultType="com.mySen.demo.model.Award">
-     SELECT a.uid,a.gettime,a.pic,a.aname,a.getgrade,a.level,a.createtime,u.username,u.cardid
+     SELECT a.id,a.uid,a.gettime,a.pic,a.aname,a.getgrade,a.level,a.createtime,u.username,u.cardid
       FROM  t_award a ,t_user u  WHERE a.uid=#{id} and a.uid=u.id ORDER BY a.id desc
     </select>
 
 
     <select id="selectAwardbycheck" resultType="com.mySen.demo.model.Award">
-      SELECT a.uid,a.gettime,a.pic,a.aname,a.getgrade,a.level,a.createtime,u.username,u.cardid
+      SELECT a.id,a.gettime,a.pic,a.aname,a.getgrade,a.level,a.createtime,u.username,u.cardid
       FROM  t_award a ,t_user u
       WHERE a.uid=#{id} and a.uid=u.id and a.aname like #{aname}
       ORDER BY a.id desc
@@ -28,5 +28,15 @@
     <update id="uploadpic">
         update t_award  set pic=#{pic}  where uid=#{uid};
     </update>
+
+    <update id="updateAward">
+        UPDATE t_award SET
+       gettime=#{gettime},aname=#{aname},getgrade=#{getgrade},
+       level=#{level} WHERE id=#{id}
+    </update>
+
+    <delete id="deleteAwerd">
+        DELETE FROM t_award  where id=#{id};
+    </delete>
 
 </mapper>

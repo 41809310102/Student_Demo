@@ -6,7 +6,7 @@ import Home from '../components/Home.vue'
 import Welcome from '../components/Welcome.vue'
 import vaccess from '../components/vaccadmin/vaccess.vue'
 import log from '../components/vaccadmin/vacclog.vue'
-import coldroom from '../components/room/coldroom.vue'
+import myapply from '../components/useradmin/myapply.vue'
 import isout from '../components/room/isout.vue'
 import Aiadmin from '../components/room/Aiadmin.vue'
 import wxuser from '../components/useradmin/wxuser.vue'
@@ -39,7 +39,7 @@ const routes = [
     redirect: '/welcome',
     children: [
       { path:'/welcome', component: Welcome},
-      { path:'/coldroom', component: coldroom},
+      { path:'/myapply', component: myapply},
       { path:'/isout', component: isout},
       { path:'/Aiadmin', component:  Aiadmin},
     ],

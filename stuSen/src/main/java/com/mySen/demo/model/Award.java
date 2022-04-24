@@ -24,5 +24,6 @@ public class Award {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         Award  u = new Award();
         Createtable t = new Createtable();
-        t.createinsertTable(t.getClassdataName(u),"t_award");
-    }}
+        t.createupdateTable(t.getClassdataName(u),"t_award");
+    }
+}

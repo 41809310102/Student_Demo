@@ -33,4 +33,14 @@ public class SysAwardserviceImpl implements IsAwardservice {
     public int uploadpic(int uid,String pic) {
         return mapper.uploadpic(uid,pic);
     }
+
+    @Override
+    public int updateAwardofid(Award award) {
+        return mapper.updateAward(award);
+    }
+
+    @Override
+    public int deleteAwerdofid(int id) {
+        return mapper.deleteAwerd(id);
+    }
 }

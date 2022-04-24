@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface IsAwardservice {
     /**
-     * 添加用户信息
+     * 个人奖励
      *
-     * @param user 用户信息
+     * @param
      * @return 数据库处理
      */
 
@@ -20,4 +20,8 @@ public interface IsAwardservice {
     public List<Award> selectAwardbycheck(int id,String aname);
 
     public int uploadpic(int uid,String pic);
+
+    public int updateAwardofid(Award award);
+
+    public int deleteAwerdofid(int id);
 }
