@@ -3,7 +3,7 @@
     <!--头部布局-->
     <el-header>
       <div>
-        <img src="../assets/yimiao.png" alt class="logo_img" />
+        <img src="../assets/icon/logo.png" alt class="logo_img" />
         <span>学生服务中心</span>
       </div>
       <el-dropdown split-button type="primary" @command="handleCommand">

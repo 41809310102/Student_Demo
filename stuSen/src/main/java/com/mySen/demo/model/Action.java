@@ -16,6 +16,7 @@ public class Action {
     private int  limitnum;//人数限制
     private String actionUser; //活动发起人
     private String state; //当前状态
+    private Boolean isapply;//当前是否被收藏
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         Action u = new Action();

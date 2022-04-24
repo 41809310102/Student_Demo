@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@CrossOrigin("http://localhost:8081")
 @RestController
 public class ApplyController {
     @Autowired
@@ -47,7 +47,7 @@ public class ApplyController {
      * @return map
      */
 
-    @PostMapping("api/Apply/getapplybyid")
+    @GetMapping("api/Apply/getapplybyid")
     public Map<String,Object> getapplybyid(@RequestParam int id){
         Map<String,Object> map = new HashMap<>();
         try{

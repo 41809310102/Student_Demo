@@ -9,26 +9,54 @@
       <el-col :span="8" >
         <div class="grid-content bg-purple">
           <el-card  shadow="hover">
-            <img  src="https://desk-fd.zol-img.com.cn/t_s960x600c5/g2/M00/0F/04/Cg-4WVVtECyIIrmqABCqFyoOCYkAAEg5wDCLrsAEKov842.jpg" style="height:100px;width:100px;border-radius:50%;margin-left:30%"/>
+            <img  src="../assets/icon/avatar35.png" style="height:100px;width:100px;border-radius:50%;margin-left:30%"/>
             <div style="margin-left:30%">
               <span>学生服务平台</span><br>
             </div>
           </el-card>
 
           <el-card shadow="hover" style="margin-top:10px;height: 400px">
-            <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
-              <el-form-item label="名称">
-                <el-input v-model="formLabelAlign.name"></el-input>
-              </el-form-item>
-              <el-form-item label="活动区域">
-                <el-input v-model="formLabelAlign.region"></el-input>
-              </el-form-item>
-              <el-form-item label="活动形式">
-                <el-input v-model="formLabelAlign.type"></el-input>
-              </el-form-item>
-            </el-form>
-            <el-button type="primary" style="margin-left:20%">提交</el-button>
-            <el-button type="danger" >清除</el-button>
+            <el-row :gutter="20">
+              <el-col :span="6"><div class="grid-content bg-purple">
+                <div>
+                  <img src="../assets/icon/m1.png" @click="mydata" class="image">
+                  <span class="mtext">班费明细</span>
+                </div>
+              </div></el-col>
+              <el-col :span="6"><div class="grid-content bg-purple">
+                <img src="../assets/icon/m6.png" @click="mydata" class="image">
+                <span class="mtext">发起投票</span>
+              </div></el-col>
+              <el-col :span="6"><div class="grid-content bg-purple">
+                <img src="../assets/icon/m7.png" @click="mydata" class="image">
+                <span class="mtext">发起问卷</span>
+              </div></el-col>
+              <el-col :span="6"><div class="grid-content bg-purple">
+                <img src="../assets/icon/m5.png" @click="mydata" class="image">
+                <span class="mtext">新建活动</span>
+              </div></el-col>
+            </el-row>
+            <el-divider></el-divider>
+            <el-row :gutter="20">
+              <el-col :span="6"><div class="grid-content bg-purple">
+                <div>
+                  <img src="../assets/icon/m4.png" @click="mydata" class="image">
+                  <span class="mtext">签到管理</span>
+                </div>
+              </div></el-col>
+              <el-col :span="6"><div class="grid-content bg-purple">
+                <img src="../assets/icon/m8.png" @click="mydata" class="image">
+                <span class="mtext">积分管理</span>
+              </div></el-col>
+              <el-col :span="6"><div class="grid-content bg-purple">
+                <img src="../assets/icon/m9.png" @click="mydata" class="image">
+                <span class="mtext">社团管理</span>
+              </div></el-col>
+              <el-col :span="6"><div class="grid-content bg-purple">
+                <img src="../assets/icon/m2.png" @click="mydata" class="image">
+                <span class="mtext">成绩导入</span>
+              </div></el-col>
+            </el-row>
           </el-card>
         </div>
       </el-col>
@@ -181,7 +209,12 @@
 
 
 <style>
-
+  .mtext{
+    margin-top: 60px;
+    font-weight: 500;
+    margin-left: 2%;
+    font-size: 15px;
+  }
   .image {
     width: 60px;
     height: 60px;

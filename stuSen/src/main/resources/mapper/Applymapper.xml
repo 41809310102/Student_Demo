@@ -14,12 +14,12 @@
         SELECT  p.id,p.uid,p.aid,p.state,a.title,a.starttime,a.endtime,a.jifen,a.limitnum,
         a.actionuser
         FROM t_apply p ,t_action a
-        where p.uid=#{id} order by p.id desc
+        where p.uid=#{id} and p.aid = a.id order by p.id desc
     </select>
 
 
     <delete id="delApply">
-        delete from t_apply whereuid=#{id}
+        delete from t_apply where id=#{id}
     </delete>
 
 
