@@ -11,8 +11,29 @@
     </insert>
 
     <select id="selectVoteinfo" resultType="com.mySen.demo.model.Vote">
-     SELECT * FROM  t_vote WHERE  uid=#{uid} order by id desc
+     SELECT * FROM  t_vote WHERE  id=#{id} order by id desc
     </select>
+
+
+    <select id="selectVoteinfoall" resultType="com.mySen.demo.model.Vote">
+     SELECT * FROM  t_vote WHERE  major=#{major} order by id desc
+    </select>
+
+    <update id="addA">
+     update t_vote set a=a+1 where id=#{vid};
+    </update>
+
+    <update id="addB">
+     update t_vote set b=b+1 where id=#{vid};
+    </update>
+
+    <update id="addC">
+     update t_vote set c=c+1 where id=#{vid};
+    </update>
+
+    <update id="addD">
+     update t_vote set d=d+1 where id=#{vid};
+    </update>
 
 
 </mapper>

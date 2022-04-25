@@ -10,7 +10,6 @@ import java.sql.SQLException;
  * */
 @Data
 public class Vote {
-
     private  int id;
     private  String name; //发起人
     private  String major; //所属班级
@@ -22,6 +21,10 @@ public class Vote {
     private  int c;
     private  int d;
     private  String endtime; //截止时间
+    private  Boolean isout;//过期
+
+
+
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         Vote u = new Vote();
         Createtable t = new Createtable();

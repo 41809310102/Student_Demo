@@ -24,11 +24,53 @@
                 </div>
               </div></el-col>
               <el-col :span="6"><div class="grid-content bg-purple">
-                <img src="../assets/icon/m6.png" @click="mydata" class="image">
+                <img src="../assets/icon/m6.png" @click="votewin=true" class="image">
                 <span class="mtext">发起投票</span>
+                <el-dialog title="添加投票" :visible.sync="votewin" width="30%">
+                  <el-form :model="voteform">
+                    <el-form-item label="问题：">
+                      <el-input  v-model="voteform.question" autocomplete="off" style="width: 300px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="截止时间：">
+                      <el-col :span="8">
+                        <el-date-picker type="date" placeholder="选择日期" v-model="voteform.endtime" style="width: 100%;"></el-date-picker>
+                      </el-col>
+                      <el-col class="line" :span="2">-</el-col>
+                      <el-col :span="8">
+                        <el-time-picker placeholder="选择时间" v-model="voteform.date2" style="width: 80%;"></el-time-picker>
+                      </el-col>
+                    </el-form-item>
+                    <el-form-item label="选项：">
+                      <el-tag
+                              :key="tag"
+                              v-for="tag in voteform.children"
+                              closable
+                              :disable-transitions="false"
+                              @close="handleClose(tag)">
+                        {{tag}}
+                      </el-tag>
+                      <el-input
+                              class="input-new-tag"
+                              v-if="inputVisible"
+                              v-model="inputValue"
+                              ref="saveTagInput"
+                              size="small"
+                              @keyup.enter.native="handleInputConfirm"
+                              @blur="handleInputConfirm"
+                      >
+                      </el-input>
+                      <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 投票选项</el-button>
+                    </el-form-item>
+                  </el-form>
+                  <div slot="footer" class="dialog-footer">
+                    <el-button @click="votewin = false">取 消</el-button>
+                    <el-button type="primary" @click="addVote">确 定</el-button>
+                  </div>
+                </el-dialog>
+
               </div></el-col>
               <el-col :span="6"><div class="grid-content bg-purple">
-                <img src="../assets/icon/m7.png" @click="mydata" class="image">
+                <img src="../assets/icon/m7.png" @click="votewin=true" class="image">
                 <span class="mtext">发起问卷</span>
               </div></el-col>
               <el-col :span="6"><div class="grid-content bg-purple">
@@ -209,6 +251,21 @@
 
 
 <style>
+  .el-tag + .el-tag {
+    margin-left: 10px;
+  }
+  .button-new-tag {
+    margin-left: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
+  }
   .mtext{
     margin-top: 60px;
     font-weight: 500;
@@ -257,6 +314,7 @@
   export default {
     data () {
       return {
+        votewin:false,//投票创建窗口开关
         codeurl:'', //二维码路由
         signlog:[],//签到记录
         dialogVisible:false,
@@ -266,6 +324,8 @@
           pageSize: 4,
 
         },
+        inputVisible: false,
+        inputValue: '',
         reverse: true,
         activities: [{
           content: '活动按期开始',
@@ -286,12 +346,14 @@
           region: '',
           type: ''
         },
-
-        queryInfof: {
-          query: "",
-          pageNum: 1,
-          pageSize: 100,
-        },
+        voteform:{
+          question:"",
+          children:[],
+          endtime:"",
+          date2:"",
+          name:"",
+          major:"",
+        }
       }
     },
     mounted: function () {
@@ -344,6 +406,46 @@
           this.$message.error("获取签到记录失败");
         }
       },
+      //删除投票选项
+      handleClose(tag) {
+        this.voteform.children.splice(this.voteform.children.indexOf(tag), 1);
+      },
+      //输入投票
+      showInput() {
+        this.inputVisible = true;
+        this.$nextTick(_ => {
+          this.$refs.saveTagInput.$refs.input.focus();
+        });
+      },
+      //将选项放入数组
+      handleInputConfirm() {
+        let inputValue = this.inputValue;
+        const arr = ["A:","B:","C:","D:"]
+        let len = this.voteform.children.length
+        if(len==4){
+          this.$message.error("最多只能添加4个选项偶！")
+        }else{
+          if (inputValue) {
+            this.voteform.children.push(arr[len]+inputValue);
+          }
+        }
+        this.inputVisible = false;
+        this.inputValue = '';
+      },
+      //添加投票到后台
+      async addVote() {
+        // 调用post请求
+        this.voteform.name =window.sessionStorage.getItem("user");
+        this.voteform.major =window.sessionStorage.getItem("major");
+        const {data: res} = await this.$http.post("api/Vote/addvote" ,this.voteform);
+        if(res=="success"){
+          this.$message.success("发布成功");
+          this.votewin = false;
+        }else{
+          this.$message.error("发布失败")
+        }
+      },
+
     },
     //只显示前10个字符
     filters:{
