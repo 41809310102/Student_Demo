@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.mySen.demo.dao.VoteMapper">
+    <insert id="addVoteinfo">
+     INSERT INTO t_vote
+    (question,options,a,b,c,d,endtime,name,major) VALUE
+    (#{question},#{options},#{a},#{b},#{c},#{d},#{endtime},#{name},#{major})
+    </insert>
+
+    <select id="selectVoteinfo" resultType="com.mySen.demo.model.Vote">
+     SELECT * FROM  t_vote WHERE  uid=#{uid} order by id desc
+    </select>
+
+
+</mapper>

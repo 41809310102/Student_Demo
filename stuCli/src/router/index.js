@@ -12,6 +12,7 @@ import Aiadmin from '../components/room/Aiadmin.vue'
 import wxuser from '../components/useradmin/wxuser.vue'
 import mygrade from '../components/useradmin/mygrade.vue'
 import mylog from '../components/useradmin/mylog.vue'
+import myvote from "../components/useradmin/myvote";
 Vue.use(VueRouter)
 
 const routes = [
@@ -42,6 +43,7 @@ const routes = [
       { path:'/myapply', component: myapply},
       { path:'/isout', component: isout},
       { path:'/Aiadmin', component:  Aiadmin},
+      { path:'/myvote', component:  myvote},
     ],
   },
 

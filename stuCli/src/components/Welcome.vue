@@ -117,7 +117,7 @@
           <el-col :span="6"><div class="grid-content bg-purple">
             <el-card style="width: 220px;height: 75px;" :body-style="{ padding: '0px' }">
               <img src="../assets/icon/7.png" class="image">
-              <span class="mytext1"><el-button type="text">我的投票</el-button></span>
+              <span class="mytext1"><el-button @click="myvote" type="text">我的投票</el-button></span>
             </el-card>
           </div></el-col>
           <el-col :span="6"><div class="grid-content bg-purple">
@@ -321,6 +321,10 @@
       //进入我的活动界面
       myapply(){
         this.$router.push("/myapply");
+      },
+      //进入投片页面
+      myvote(){
+        this.$router.push("/myvote")
       },
        //获取二维码
       async   getCode(){
