@@ -16,7 +16,15 @@
 
 
     <select id="selectVoteinfoall" resultType="com.mySen.demo.model.Vote">
-     SELECT * FROM  t_vote WHERE  major=#{major} order by id desc
+         SELECT * FROM  t_vote
+      WHERE  major=#{major}
+      order by id desc
+    </select>
+
+    <select id="selectVoteinfolog" resultType="com.mySen.demo.model.Vote">
+      SELECT * FROM  t_vote tv,t_votelog vlg
+      WHERE  tv.major=#{major} and  vlg.uid = #{uid} and tv.id=vlg.vid
+      order by tv.id desc
     </select>
 
     <update id="addA">
@@ -34,6 +42,13 @@
     <update id="addD">
      update t_vote set d=d+1 where id=#{vid};
     </update>
+
+
+    <insert id="insertvotelog">
+        INSERT INTO t_votelog
+    (vid,uid) VALUE
+    (#{vid},#{uid})
+    </insert>
 
 
 </mapper>

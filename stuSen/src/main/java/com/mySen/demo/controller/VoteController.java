@@ -1,5 +1,6 @@
 package com.mySen.demo.controller;
 
+import com.mySen.demo.dao.VoteMapper;
 import com.mySen.demo.model.Action;
 import com.mySen.demo.model.Vote;
 import com.mySen.demo.model.Votedatas;
@@ -15,6 +16,8 @@ import java.util.*;
 public class VoteController {
     @Autowired
     private IsVoteservice isVoteservice;
+    @Autowired
+    private VoteMapper voteMapper;
     public SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
@@ -74,6 +77,10 @@ public class VoteController {
                 for(int i = 0;i<vote.getChildren().length;i++){
                     Votedatas node = new Votedatas();
                     node.setId(i+1);node.setTitle(vote.getChildren()[i]);node.setVid(vote.getId());
+                    //添加标记token
+                    StringBuffer token = new StringBuffer();
+                    token.append(vote.getId());
+                    node.setToken(token.toString());
                     if(i>=0&&i==0){
                         node.setNum(vote.getA());
                     }else if(i>=1&&i==1){
@@ -101,15 +108,16 @@ public class VoteController {
 
     /**
      * @param
-     * @Desc 获取全部投票接口
+     * @Desc 获取全部没有投票的投票接口
      * @return map
      */
     @GetMapping("api/Vote/selectvoteall")
-    public Map<String,Object> selectVotelistall(@RequestParam() String  major){
+    public Map<String,Object> selectVotelistall(@RequestParam String  major,
+                                                @RequestParam int uid){
         //将存储在数组中的选项持久化
         Map<String,Object> map = new HashMap<>();
         try{
-            List<Vote> sub  = isVoteservice.selectVoteinfoall(major);
+            List<Vote> sub  = isVoteservice.selectVoteinfoall(major,uid);
             int numbers = sub.size();
             map.put("data",sub);
             map.put("code",1);
@@ -122,4 +130,55 @@ public class VoteController {
         }
         return map;
     }
+
+
+
+    /**
+     * @param
+     * @Desc 获取全部已经投了票的投票接口
+     * @return map
+     */
+    @GetMapping("api/Vote/selectvotelog")
+    public Map<String,Object> selectVotelistlog(@RequestParam String  major,
+                                                @RequestParam int uid){
+        //将存储在数组中的选项持久化
+        Map<String,Object> map = new HashMap<>();
+        try{
+            List<Vote> sub  = isVoteservice.selectVoteinfolog(major,uid);
+            int numbers = sub.size();
+            map.put("data",sub);
+            map.put("code",1);
+            map.put("numbers",numbers);
+            map.put("msg","数据获取成功!");
+        }catch (Exception e){
+            System.out.println(e.toString());
+            map.put("code",-1);
+            map.put("msg","服务器发生错误!");
+        }
+        return map;
+    }
+
+    /**
+     * @param
+     * @Desc 获取投票接口
+     * @return map
+     */
+    @GetMapping("api/Vote/getMyoption")
+     public String getaddMyoption(@RequestParam int vid,@RequestParam int option,@RequestParam int uid){
+         int i = 0;
+         //判断用户选择
+         if(option==1){
+            i = isVoteservice.addA(vid);
+         }else if(option==2){
+             i = isVoteservice.addB(vid);
+         }else if(option==3){
+             i = isVoteservice.addC(vid);
+         }else{
+             i = isVoteservice.addD(vid);
+         }
+
+          i =i+ voteMapper.insertvotelog(vid,uid);
+
+         return i>1? "success":"error";
+     }
 }

@@ -10,7 +10,9 @@ public interface IsVoteservice {
 
     public List<Vote> selectVoteinfo(int id);
 
-    public List<Vote> selectVoteinfoall(String major);
+    public List<Vote> selectVoteinfoall(String major,int uid);
+
+    public List<Vote> selectVoteinfolog(String major,int uid);
 
     public int addA(int vid);
 

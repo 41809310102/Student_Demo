@@ -13,7 +13,9 @@ public interface VoteMapper {
 
    public List<Vote> selectVoteinfo(int id);
 
-   public List<Vote> selectVoteinfoall(String major);
+   public List<Vote> selectVoteinfoall(String major,int uid);
+
+   public List<Vote> selectVoteinfolog(String major,int uid);
 
    public int addA(int vid);
 
@@ -22,5 +24,9 @@ public interface VoteMapper {
    public int addC(int vid);
 
    public int addD(int vid);
+
+   public int insertvotelog(int vid,int uid);
+
+
 
 }

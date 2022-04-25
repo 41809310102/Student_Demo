@@ -151,6 +151,7 @@ export default {
           // 调用get请求
         const {data :res} = await this.$http.post("api/user/loginuser", this.loginForm);
          if (res.code==1) {
+             var arrvid = [];
              window.sessionStorage.setItem('user',res.user.username); // session 放置
              window.sessionStorage.setItem('id',res.user.id); // session 放置
              window.sessionStorage.setItem('major',res.user.major); // session 放置

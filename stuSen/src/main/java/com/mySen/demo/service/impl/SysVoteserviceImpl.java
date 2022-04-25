@@ -23,27 +23,32 @@ public class SysVoteserviceImpl implements IsVoteservice {
     }
 
     @Override
-    public List<Vote> selectVoteinfoall(String major) {
-        return voteMapper.selectVoteinfoall(major);
+    public List<Vote> selectVoteinfoall(String major,int uid) {
+        return voteMapper.selectVoteinfoall(major,uid);
+    }
+
+    @Override
+    public List<Vote> selectVoteinfolog(String major, int uid) {
+        return voteMapper.selectVoteinfolog(major,uid);
     }
 
     @Override
     public int addA(int vid) {
-        return 0;
+        return voteMapper.addA(vid);
     }
 
     @Override
     public int addB(int vid) {
-        return 0;
+        return voteMapper.addB(vid);
     }
 
     @Override
     public int addC(int vid) {
-        return 0;
+        return voteMapper.addC(vid);
     }
 
     @Override
     public int addD(int vid) {
-        return 0;
+        return voteMapper.addD(vid);
     }
 }

@@ -22,6 +22,7 @@ public class Vote {
     private  int d;
     private  String endtime; //截止时间
     private  Boolean isout;//过期
+    private  Boolean ispass;//投票记录
 
 
 
