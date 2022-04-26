@@ -126,17 +126,7 @@
           this.getaction();
         },
         methods: {
-            handleCommand(command) {
-                if(command==1){
-                    this.queryInfo.style="管理员id"
-                }
-                if(command==2){
-                    this.queryInfo.style="疫苗编号"
-                }
-                if(command==3){
-                    this.queryInfo.style="疫苗状态"
-                }
-            },
+
             //获得操作信息
             // 监听pageSize改变的事件
             handleSizeChange(newSize) {
@@ -235,15 +225,7 @@
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             },
-            //保存设置
-            async  updatacloddata(){
-                const {data:res} = await this.$http.post("api/room/updateColdroomdata",this.ruleForm);
-                if(res=="success"){
-                    this.$message.success("仓库属性设置成功!")
-                }else{
-                    this.$message.error("仓库属性设置失败")
-                }
-            }
+
         },
 
     }

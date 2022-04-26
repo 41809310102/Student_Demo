@@ -1,0 +1,23 @@
+package com.mySen.demo.model;
+
+import com.mySen.demo.util.Createtableutil.Createtable;
+import lombok.Data;
+
+import java.sql.SQLException;
+
+@Data
+public class Classfee {
+    private int id;
+    private String name;
+    private String addusername;
+    private String major;
+    private String time;
+    private float money;
+
+
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        Classfee u = new Classfee();
+        Createtable t = new Createtable();
+        t.createupdateTable(t.getClassdataName(u),"t_classfee");
+    }
+}

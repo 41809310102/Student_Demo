@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.mySen.demo.dao.ClassfeeMapper">
+    <insert id="addClassfeeinfo">
+     INSERT INTO t_classfee
+     (name,addusername,major,time,money) VALUE
+     (#{name},#{addusername},#{major},#{time},#{money})
+    </insert>
+
+
+     <select id="getAllclassfee" resultType="com.mySen.demo.model.Classfee">
+     SELECT * FROM t_classfee WHERE major=#{major}
+     </select>
+
+     <update id="updateClassfeeofid">
+       UPDATE t_classfee SET
+       name=#{name},addusername=#{addusername},time=#{time},money=#{money} WHERE id=#{id}
+     </update>
+
+    <delete id="delclassfee">
+     delete from t_classfee where id=#{id};
+    </delete>
+
+</mapper>

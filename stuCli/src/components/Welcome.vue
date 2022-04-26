@@ -19,7 +19,7 @@
             <el-row :gutter="20">
               <el-col :span="6"><div class="grid-content bg-purple">
                 <div>
-                  <img src="../assets/icon/m1.png" @click="Money=true" class="image">
+                  <img src="../assets/icon/m1.png" @click="getMoney" class="image">
                   <span class="mtext">班费明细</span>
                 </div>
                 <el-dialog title="班费明细" :visible.sync="Money" width="60%">
@@ -59,7 +59,7 @@
                             width="100">
                       <template slot-scope="scope">
                         <el-button  @click="updateMoney(scope.row)" type="text" size="small">修改</el-button>
-                        <el-button type="text" @click="delMoney(scope.row)" size="small">删除</el-button>
+                        <el-button type="text" @click="delMoney(scope.row.id)" size="small">删除</el-button>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -116,8 +116,31 @@
                 <span class="mtext">发起问卷</span>
               </div></el-col>
               <el-col :span="6"><div class="grid-content bg-purple">
-                <img src="../assets/icon/m5.png" @click="mydata" class="image">
+                <img src="../assets/icon/m5.png" @click="addactionwin = true" class="image">
                 <span class="mtext">新建活动</span>
+                <el-dialog title="新建活动" :visible.sync="addactionwin" width="40%">
+                  <el-form :model="actionform">
+                    <el-form-item label="活动名称:" label-width="120" >
+                      <el-input v-model="actionform.title" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="开始时间:" label-width="120">
+                      <el-input  type="date" v-model="actionform.starttime" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="结束时间:" label-width="120">
+                      <el-input type="date"  v-model="actionform.endtime" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="人数上限:" label-width="120">
+                      <el-input v-model="actionform.limitnum" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="活动积分:" label-width="120">
+                      <el-input v-model="actionform.jifen" autocomplete="off"></el-input>
+                    </el-form-item>
+                  </el-form>
+                  <div slot="footer" class="dialog-footer">
+                    <el-button @click="addactionwin = false">取 消</el-button>
+                    <el-button type="primary" @click="addactionofSen">确 定</el-button>
+                  </div>
+                  </el-dialog>
               </div></el-col>
             </el-row>
             <el-divider></el-divider>
@@ -356,6 +379,7 @@
   export default {
     data () {
       return {
+        addactionwin:false,//新建活动窗口
         publicMoney:false,//班费公开，私密权限
         Money:false,//班费明细
         innerVisible:false,//记账窗口
@@ -372,6 +396,15 @@
         inputVisible: false,
         inputValue: '',
         reverse: true,
+        actionform:{
+          actionUser: "",
+          actiontime: "",
+          starttime: "",
+          endtime: "",
+          jifen: "",
+          limitnum: 0,
+          title: ""
+        },
         activities: [{
           content: '活动按期开始',
           timestamp: '2018-04-15'
@@ -401,13 +434,7 @@
           major:"",
         },
         //班费记录
-        MoneyData:[{time:"2022-04-26T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:1},
-          {time:"2022-04-26T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:2},
-          {time:"2022-04-23T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:3},
-          {time:"2022-04-26T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:4},
-          {time:"2022-04-25T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:5},
-          {time:"2022-04-26T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:6},
-          {time:"2022-04-24T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:7},
+        MoneyData:[
         ],
         //记账表单
         formInline:{
@@ -511,23 +538,78 @@
         }
       },
       //记账添加
-      addMoney(){
-
+      async addMoney() {
+        // 调用post请求
+        //先判断是编辑还是添加
+        this.formInline.addusername =window.sessionStorage.getItem("user");
+        if(this.formInline.id==0){
+          this.formInline.major =window.sessionStorage.getItem("major");
+          const {data: res} = await this.$http.post("api/classfee/addclassfee" ,this.formInline);
+          if(res.code==1){
+            this.$message.success(res.msg)
+            await this.getMoney();
+          }else{
+            this.$message.error(res.msg)
+          }
+        }else{
+          const {data: res} = await this.$http.post("api/classfee/updateclassfee" ,this.formInline);
+          if(res.code==1){
+            this.$message.success(res.msg)
+            await this.getMoney();
+          }else{
+            this.$message.error(res.msg)
+          }
+        }
       },
-
+      //记账记录获取
+      async getMoney() {
+        this.Money = true;
+        const {data: res} = await this.$http.get("api/Classfee/getallClass?major=" + window.sessionStorage.getItem("major"));
+        if (res.code == 1){
+          this.MoneyData = res.data;
+        } else{
+          this.$message.error(res.msg)
+        }
+      },
       //记账编辑
       updateMoney(row){
         this.innerVisible = !this.innerVisible
         this.formInline.name=row.name;
         this.formInline.money =row.money;
         this.formInline.id = row.id;
-
       },
 
       //记账删除
-      delMoney(id){
-
+      async delMoney(id) {
+        const confirmResult = await this.$confirm('是否确认删除该班费记录?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).catch(err => err)
+        // 成功删除为confirm 取消为 cancel
+        if (confirmResult != 'confirm') {
+          return this.$message.info("已取消操作");
+        }
+        const {data: res} = await this.$http.get("api/classfee/delclassfee?id=" +id);
+        if (res.code == 1) {
+          this.$message.success(res.msg)
+          await this.getMoney();
+        } else {
+          this.$message.error(res.msg)
+        }
       },
+
+      //创建活动逻辑
+      async addactionofSen(){
+        this.actionform.actionUser = window.sessionStorage.getItem("user");
+        const {data: res} = await this.$http.post("api/Action/addAction" ,this.actionform);
+        if (res.code == 1) {
+          this.$message.success(res.msg);
+          this.addactionwin = false;
+        } else {
+          this.$message.error(res.msg)
+        }
+      }
 
     },
     //只显示前10个字符
