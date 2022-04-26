@@ -112,4 +112,5 @@ router.beforeEach((to, from, next) => {
   next();
 })
 
+
 export default router// 暴露出去

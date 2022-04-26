@@ -19,9 +19,51 @@
             <el-row :gutter="20">
               <el-col :span="6"><div class="grid-content bg-purple">
                 <div>
-                  <img src="../assets/icon/m1.png" @click="mydata" class="image">
+                  <img src="../assets/icon/m1.png" @click="Money=true" class="image">
                   <span class="mtext">班费明细</span>
                 </div>
+                <el-dialog title="班费明细" :visible.sync="Money" width="60%">
+                  <el-row :gutter="20">
+                    <el-col :span="3"><div class="grid-content bg-purple">
+                      <el-button type="danger" @click="innerVisible=true">记账</el-button>
+                    </div></el-col>
+                    <el-col :span="18" v-if="innerVisible"><div class="grid-content bg-purple">
+                      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+                        <el-form-item label="缴费人:">
+                          <el-input v-model="formInline.name"  clearable placeholder="输入缴费人姓名"></el-input>
+                        </el-form-item>
+                        <el-form-item label="费用：">
+                          <el-input v-model="formInline.money"  clearable placeholder="输入缴费金额"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                          <el-button type="primary" @click="addMoney">保存</el-button>
+                        </el-form-item>
+                      </el-form>
+                    </div></el-col>
+                    <el-col :span="3"><div class="grid-content bg-purple">
+                      <div style="margin-top: 10px">公开?<el-switch
+                              v-model="publicMoney"
+                              active-color="#13ce66"
+                              inactive-color="#ff4949">
+                                </el-switch></div>
+                    </div></el-col>
+                  </el-row>
+                  <el-table :data="MoneyData" height="350" border style="width: 60%"  :default-sort = "{prop: 'time', order: 'descending'}">
+                    <el-table-column prop="time" sortable label="日期" width="180"></el-table-column>
+                    <el-table-column prop="name" label="姓名" width="80"></el-table-column>
+                    <el-table-column prop="money" label="缴纳/元" width="80"></el-table-column>
+                    <el-table-column prop="addusername" label="记账人" width="100"></el-table-column>
+                    <el-table-column
+                            fixed="right"
+                            label="操作"
+                            width="100">
+                      <template slot-scope="scope">
+                        <el-button  @click="updateMoney(scope.row)" type="text" size="small">修改</el-button>
+                        <el-button type="text" @click="delMoney(scope.row)" size="small">删除</el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </el-dialog>
               </div></el-col>
               <el-col :span="6"><div class="grid-content bg-purple">
                 <img src="../assets/icon/m6.png" @click="votewin=true" class="image">
@@ -314,6 +356,9 @@
   export default {
     data () {
       return {
+        publicMoney:false,//班费公开，私密权限
+        Money:false,//班费明细
+        innerVisible:false,//记账窗口
         votewin:false,//投票创建窗口开关
         codeurl:'', //二维码路由
         signlog:[],//签到记录
@@ -346,6 +391,7 @@
           region: '',
           type: ''
         },
+        //投票创建
         voteform:{
           question:"",
           children:[],
@@ -353,7 +399,26 @@
           date2:"",
           name:"",
           major:"",
-        }
+        },
+        //班费记录
+        MoneyData:[{time:"2022-04-26T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:1},
+          {time:"2022-04-26T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:2},
+          {time:"2022-04-23T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:3},
+          {time:"2022-04-26T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:4},
+          {time:"2022-04-25T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:5},
+          {time:"2022-04-26T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:6},
+          {time:"2022-04-24T16:00:00.000Z",name:"胡俊杰",money:65.5,addusername:"王小明",id:7},
+        ],
+        //记账表单
+        formInline:{
+          id:0,
+          name:"",
+          time:"",
+          money:"",
+          addusername:"",
+          major:"",
+          config:false,
+        },
       }
     },
     mounted: function () {
@@ -444,6 +509,24 @@
         }else{
           this.$message.error("发布失败")
         }
+      },
+      //记账添加
+      addMoney(){
+
+      },
+
+      //记账编辑
+      updateMoney(row){
+        this.innerVisible = !this.innerVisible
+        this.formInline.name=row.name;
+        this.formInline.money =row.money;
+        this.formInline.id = row.id;
+
+      },
+
+      //记账删除
+      delMoney(id){
+
       },
 
     },
