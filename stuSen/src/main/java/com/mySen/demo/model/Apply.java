@@ -4,7 +4,9 @@ import com.mySen.demo.util.Createtableutil.Createtable;
 import lombok.Data;
 
 import java.sql.SQLException;
-
+/**
+ * Desc:活动申请记录类
+ * */
 @Data
 public class Apply {
     private int id;

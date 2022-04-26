@@ -4,7 +4,9 @@ import com.mySen.demo.util.Createtableutil.Createtable;
 import lombok.Data;
 
 import java.sql.SQLException;
-
+/**
+ * Desc:班费类
+ * */
 @Data
 public class Classfee {
     private int id;

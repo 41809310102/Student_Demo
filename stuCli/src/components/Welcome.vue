@@ -112,7 +112,7 @@
 
               </div></el-col>
               <el-col :span="6"><div class="grid-content bg-purple">
-                <img src="../assets/icon/m7.png" @click="votewin=true" class="image">
+                <img src="../assets/icon/m7.png" @click="myquestion" class="image">
                 <span class="mtext">发起问卷</span>
               </div></el-col>
               <el-col :span="6"><div class="grid-content bg-purple">
@@ -230,7 +230,7 @@
           <el-col :span="6"><div class="grid-content bg-purple">
             <el-card style="width: 220px;height: 75px;" :body-style="{ padding: '0px' }">
               <img src="../assets/icon/88.png" class="image">
-              <span class="mytext1"><el-button type="text">我的问卷</el-button></span>
+              <span class="mytext1"><el-button @click="myquestions" type="text">我的问卷</el-button></span>
             </el-card>
           </div></el-col>
         </el-row>
@@ -479,6 +479,14 @@
       //进入投片页面
       myvote(){
         this.$router.push("/myvote")
+      },
+      //进入问卷创建页面
+      myquestion(){
+        this.$router.push("/question")
+      },
+      //进入问卷填写页面
+      myquestions(){
+        this.$router.push("/myquestion")
       },
        //获取二维码
       async   getCode(){
