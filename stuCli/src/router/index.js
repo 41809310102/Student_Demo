@@ -15,6 +15,7 @@ import mylog from '../components/useradmin/mylog.vue'
 import myvote from "../components/useradmin/myvote.vue";
 import question from "../components/useradmin/question.vue";
 import myquestion from "../components/useradmin/myquestion.vue";
+import mydata from "../components/useradmin/mydata.vue";
 Vue.use(VueRouter)
 
 const routes = [
@@ -48,6 +49,7 @@ const routes = [
       { path:'/myvote', component:  myvote},
       { path:'/question', component:  question},
       { path:'/myquestion', component:  myquestion},
+      { path:'/mydata', component:  mydata},
     ],
   },
 

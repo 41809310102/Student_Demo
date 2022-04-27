@@ -49,6 +49,27 @@
                  <el-divider></el-divider>
              </div>
          </el-card>
+        <el-divider></el-divider>
+        <el-tag type="success" v-if="!showwin">已填写:{{votelist1.length}}</el-tag>
+        <el-row v-if="!showwin">
+            <el-col style="width: 330px;margin-left: 20px" :span="4"  v-for="(item) in votelist1"  :offset="1" >
+                <div style="margin-top:15px;" v-if="!item.ispass">
+                    <el-card :body-style="{ padding: '10px'}" shadow="hover" style="height: 200px">
+                        <div>
+                            <span style="color: blue">班级：{{item.major}}</span><br>
+                            <div style="height: 50px;margin-top: 10px">
+                                <span style="color:black">问卷主题：{{item.title}}</span><br>
+                            </div>
+                            <el-divider></el-divider>
+                            <div style="width: 300px ">
+                                <span style="width: 200px"><strong>创建时间:</strong>{{item.time}}</span><br>
+                                <el-tag type="success" v-if="!showwin">已填写</el-tag>
+                            </div>
+                        </div>
+                    </el-card>
+                </div>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -71,6 +92,7 @@
                 glodate:"",
                 dialogVisible:false,
                 votelist:[],
+                votelist1:[],
                 myoption:[],//持久化选择
                 radio: 0,
                 count:0,//确定次数
@@ -94,6 +116,7 @@
                 ],
 
                 topics: [{
+                    questid:"123",
                     title:"今天你学习了吗",
                     username:"",
                     major:'',
@@ -101,6 +124,7 @@
                     questionName: 'cscscsdcsdcsdcsdcsdcsdc',
                     answers: [{ value: '1' },{ value: '2' },{ value: '3' },{ value: '4' }]
                 }, {
+                    questid:"123",
                     title:"哈哈哈",
                     username:"",
                     major:'',
@@ -133,24 +157,26 @@
                 const data = {
                     major: window.sessionStorage.getItem("major")
                 };
-                const {data: res} = await this.$http.get("api/paper/getPaperfarther?major="+data.major)
+                const {data: res} = await this.$http.get("api/paper/getPaperfarther?major="+data.major+"&myname="+window.sessionStorage.getItem("user"))
                 if(res.code==1){
-                    this.votelist = res.data;
+                    this.votelist = res.data //没有回答的问卷
+                    this.votelist1 = res.data1;//回答的问卷
                 }else{
                     this.$message.error(res.msg);
                 }
             },
 
-            getVoteofid(item){
-                var id = item.questid; //获取问卷id;
+            async getVoteofid(item) {
+                const id = item.questid; //获取问卷id;
                 this.dialogVisible = true;
                 this.showwin = true;
-                let len = this.topics.length;
-                const arr = [];
-                for(let i = 0;i<len;i++){
-                    arr.push("0");
+                const {data: res} = await this.$http.get("api/paper/getPaper?questid=" + id)
+                if (res.code == 1) {
+                    this.topics = res.data;
+                } else {
+                    this.$message.error(res.msg);
                 }
-                this.myoption = arr;
+                this.myoption =[];
             },
             //计算投票百分比
             count(){
@@ -171,15 +197,25 @@
               this.glodate = res;
             },
             //确认选择
-            updatemyoption(){
-                let  i = this.count;
+            async updatemyoption() {
+                let i = this.count;
                 this.myoption[i] = this.glodate;
-                if(i==this.topics.length-1){
-                   this.$message.success("恭喜你，已经完成所有问题")
+                if (i == this.topics.length - 1) {
+                    this.$message.success("恭喜你，已经完成所有问题")
                     //提交答案
-                }else{
+                    const {data: res} = await this.$http.get("api/paper/uploadmyask?myoption=" +this.myoption+"&major="+
+                        window.sessionStorage.getItem("major")+ "&questid="+this.topics[0].questid+"&myname="+window.sessionStorage.getItem("user")+"&title="+this.topics[0].title);
+                    if (res=="success") {
+                        this.getVote();
+                        this.dialogVisible = false;
+                        this.showwin =false;
+                    } else {
+                        console.log("数据保存失败")
+                    }
+
+                } else {
                     this.$message.success("保存成功")
-                    this.count = i+1;
+                    this.count = i + 1;
                 }
             },
 

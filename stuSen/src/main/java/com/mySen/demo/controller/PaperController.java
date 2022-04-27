@@ -3,10 +3,7 @@ package com.mySen.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.mySen.demo.dao.PaperMapper;
 import com.mySen.demo.dao.QuestionMapper;
-import com.mySen.demo.model.Answers;
-import com.mySen.demo.model.Paper;
-import com.mySen.demo.model.Question;
-import com.mySen.demo.model.Sign;
+import com.mySen.demo.model.*;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -78,8 +75,22 @@ public class PaperController {
     public Map<String,Object> getPaperfarther(@RequestParam String major){
         Map<String,Object> map = new HashMap<>();
         try{
-            List<Paper> log = paperMapper.getPaper(major);
-            map.put("data",log);
+            List<Paper> res = new LinkedList<>();//保存没有回答的问卷
+            List<Paper> res1 = new LinkedList<>();//保存已经回答的问卷
+            List<Paper> papers = paperMapper.getPaper(major);
+            List<Myquestion> log = paperMapper.getlog(major,"胡俊杰");
+            System.out.println(log.toString());
+           for(int i = 0;i<log.size();i++){
+               for(int j = 0;j<papers.size();j++){
+                   if(papers.get(j).getQuestid().equals(log.get(i).getQuestid())){
+                      res1.add(papers.get(j));
+                       System.out.println(res1.toString());
+                      papers.remove(j);
+                   }
+               }
+           }
+            map.put("data",papers);
+            map.put("data1",res1);
             map.put("code",1);
         }catch (Exception e){
             System.out.println(e.toString());
@@ -95,19 +106,41 @@ public class PaperController {
      * @Desc 获取问卷子题
      * @return map
      */
-    @PostMapping("api/paper/getPaper")
-    public String getPaperchild(@RequestParam String questid) throws Exception {
+    @GetMapping("api/paper/getPaper")
+    public  Map<String,Object> getPaperchild(@RequestParam String questid) throws Exception {
       List<Question> list = questionMapper.getQuestionofid(questid);
       List<Question> res = new LinkedList<>();
       for(Question question : list){
           question.setAnswers(byte2obj(question.getAnswersopt()));
           res.add(question);
       }
-
-      return JSON.toJSONString(res);
+      Map<String,Object> map = new HashMap<>();
+      map.put("code",1);
+      map.put("data",res);
+      return map;
     }
-
-
+    /**
+     * @param
+     * @Desc 提交问卷回答
+     * @return map
+     */
+    @GetMapping("api/paper/uploadmyask")
+     public String getMyquestion(@RequestParam String[] myoption,@RequestParam String questid,
+                                 @RequestParam String major,@RequestParam String myname,@RequestParam String title){
+        String str= "";
+        for(int i = 0;i<myoption.length;i++){
+            int id = i+1;
+            str=str+id+"."+myoption[i]+" ";
+        }
+        System.out.println(myoption);
+        Myquestion myquestion = new Myquestion();
+        myquestion.setValue(str);
+        myquestion.setMajor(major);myquestion.setQuestid(questid);myquestion.setMyname(myname);
+        myquestion.setTitle(title);myquestion.setAsktime(sdf.format(new Date()));
+        System.out.println(myquestion.toString());
+        int i =  paperMapper.addMyquestion(myquestion);
+        return i>0?"success":"error";
+     }
 
 
     //序列化对象

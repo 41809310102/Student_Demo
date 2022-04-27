@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 @CrossOrigin("http://localhost:8080")
 @RestController
 public class VoteController {

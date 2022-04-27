@@ -199,7 +199,7 @@
           <el-col :span="6"><div class="grid-content bg-purple">
             <el-card style="width: 220px;height: 75px;" :body-style="{ padding: '0px' }">
               <img src="../assets/icon/5.png" class="image">
-              <span class="mytext1"><el-button type="text">我的社团</el-button></span>
+              <span class="mytext1"><el-button type="text">数据汇总</el-button></span>
             </el-card>
           </div></el-col>
           <el-col :span="6"><div class="grid-content bg-purple">

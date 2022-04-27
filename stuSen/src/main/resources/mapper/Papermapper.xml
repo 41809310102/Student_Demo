@@ -15,7 +15,16 @@
      WHERE  major=#{major} order by id desc
     </select>
 
+    <select id="getlog" resultType="com.mySen.demo.model.Myquestion">
+     SELECT * FROM  t_myquestion
+     WHERE  major=#{major} and myname=#{myname} order by id desc
+    </select>
 
+    <insert id="addMyquestion">
+    INSERT INTO t_myquestion
+    (title,myname,major,asktime,value,questid,createusername) VALUE
+    (#{title},#{myname},#{major},#{asktime},#{value},#{questid},#{createusername})
+    </insert>
 
 
 </mapper>
