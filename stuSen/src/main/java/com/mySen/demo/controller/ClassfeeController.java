@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin("http://localhost:8081")
+@CrossOrigin("http://localhost:8080")
 @RestController
 public class ClassfeeController {
     @Autowired

@@ -174,20 +174,11 @@
             updatemyoption(){
                 let  i = this.count;
                 this.myoption[i] = this.glodate;
-                const arr = [];
-                if(this.topics.length==1){
-                    const data = {
-                        title: '恭喜你，已经完成所有问卷题目!',
-                        answers:[],
-                    };
-                    this.topics = arr.push(data);
-                    this.finsh = true;
-                    this.$message.success("恭喜你，已经完成所有问卷")
+                if(i==this.topics.length-1){
+                   this.$message.success("恭喜你，已经完成所有问题")
+                    //提交答案
                 }else{
-                    for(let k = i+1 ;k<this.topics.length;k++){
-                        arr.push(this.topics[k]);
-                    }
-                    this.topics = arr;
+                    this.$message.success("保存成功")
                     this.count = i+1;
                 }
             },

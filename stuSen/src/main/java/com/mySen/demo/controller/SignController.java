@@ -18,7 +18,7 @@ import java.util.Map;
  * @param
  * @return
  */
-@CrossOrigin("http://localhost:8081")
+@CrossOrigin("http://localhost:8080")
 @RestController
 public class SignController {
 
