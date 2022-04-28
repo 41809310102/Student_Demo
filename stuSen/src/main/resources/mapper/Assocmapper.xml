@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.mySen.demo.dao.AssocMapper">
+    <insert id="adAccinfo">
+     INSERT INTO t_association
+     (name,createuser,desction) VALUE
+     (#{name},#{createuser},#{desction})
+    </insert>
+
+    <select id="selectAcc" resultType="com.mySen.demo.model.Association">
+     SELECT * FROM  t_association WHERE  id>0
+    </select>
+
+
+    <update id="updateAcc">
+     UPDATE t_association SET
+     name=#{name},createuser=#{createuser},desction=#{desction} WHERE id=#{id}
+    </update>
+
+    <delete id="delAcc">
+        delete from t_association where id=#{id}
+    </delete>
+
+</mapper>
