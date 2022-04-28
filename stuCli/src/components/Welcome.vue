@@ -160,11 +160,40 @@
                 <span class="mtext">社团管理</span>
               </div></el-col>
               <el-dialog title="社团管理" :visible.sync="setuan">
-                <el-table :data="assoc">
-                  <el-table-column property="name" label="社团名称" width="100"></el-table-column>
-                  <el-table-column property="craeteuser" label="创建人" width="100"></el-table-column>
-                  <el-table-column property="desction" label="社团描述"  width="100"></el-table-column>
-                </el-table>
+                <el-row :gutter="20">
+                  <el-col :span="16"><div class="grid-content bg-purple">
+                    <el-table :data="assoc" border   style="width: 80%">
+                      <el-table-column property="name" label="社团名称" width="100"></el-table-column>
+                      <el-table-column property="createuser" label="创建人" width="80"></el-table-column>
+                      <el-table-column property="desction" label="社团描述"  width="100"></el-table-column>
+                      <el-table-column fixed="right" label="操作" width="130">
+                        <template slot-scope="scope">
+                          <el-button v-if="!quxiao" @click="xiougaituandui(scope.row)" type="text" size="small"><el-tag size="mini" type="success">修改</el-tag></el-button>
+                          <el-button v-if="quxiao" @click="quxiaofun" type="text" size="small"><el-tag size="mini" type="success">取消</el-tag></el-button>
+                          <el-button @click="delTuandui(scope.row)" type="text" size="small"><el-tag size="mini" type="danger">删除</el-tag></el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </div></el-col>
+                  <el-col :span="8"><div class="grid-content bg-purple">
+                    <el-card style="margin-left:-50px">
+                      <el-form :model="formshetuan">
+                      <el-form-item label="社团名称:" >
+                        <el-input v-model="formshetuan.name" autocomplete="off"></el-input>
+                      </el-form-item>
+                      <el-form-item label="创建人:" >
+                        <el-input v-model="formshetuan.createuser" autocomplete="off"></el-input>
+                      </el-form-item>
+                        <el-form-item label="描述:">
+                          <el-input v-model="formshetuan.desction" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                          <el-button type="primary" @click="updatasetuan">确定</el-button>
+                        </el-form-item>
+                      </el-form>
+                    </el-card>
+                  </div></el-col>
+                </el-row>
               </el-dialog>
               <el-col :span="6"><div class="grid-content bg-purple">
                 <img src="../assets/icon/m2.png" @click="mydata" class="image">
@@ -386,6 +415,7 @@
   export default {
     data () {
       return {
+        quxiao:false,
         setuan:false,//创建社团管理页面
         addactionwin:false,//新建活动窗口
         publicMoney:false,//班费公开，私密权限
@@ -394,6 +424,12 @@
         votewin:false,//投票创建窗口开关
         codeurl:'', //二维码路由
         signlog:[],//签到记录
+        formshetuan:{ //社团表单
+          id:0,
+          createuser:"",
+          desction:"",
+          name:""
+        },
         assoc:[],//社团信息记录
         dialogVisible:false,
         queryInfo: {
@@ -635,12 +671,88 @@
       async assocation() {
         this.setuan = true;
         const {data: res} = await this.$http.post("api/association/SelectAss")
-        if (res.code == 1) {
+        if (res.code == 0) {
           this.assoc = res.data;
         } else {
           this.$message.error(res.msg);
         }
-      }
+      },
+
+      //编辑社团信息
+      xiougaituandui(row) {
+        this.quxiao = true;
+        this.formshetuan = row;
+      },
+      quxiaofun(){
+        this.quxiao = false;
+        const arr = { //社团表单
+          id: 0,
+          createuser: "",
+          desction: "",
+          name: ""
+        };
+        this.formshetuan=arr;
+      },
+      //删除社团
+      async delTuandui(row) {
+        if(row.createuser!=window.sessionStorage.getItem("user")){
+          this.$message.error("你不是该社团创建人，无法修改该社团")
+          return;
+        }
+        const confirmResult = await this.$confirm('是否确认删除该活动记录?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).catch(err => err)
+        // 成功删除为confirm 取消为 cancel
+        if (confirmResult != 'confirm') {
+          return this.$message.info("已取消操作");
+        }
+        const {data: res} = await this.$http.get("api/association/delSelect?id="+row.id)
+        if (res.code == 1) {
+           this.$message.success(res.msg)
+           await this.assocation();
+        } else {
+          this.$message.error(res.msg);
+        }
+      },
+      //保存社团或添加社团
+
+      async updatasetuan() {
+        if (this.formshetuan.id == 0){
+          const {data: res} = await this.$http.post("api/association/addAss",this.formshetuan)
+          if (res.code == 1) {
+            this.$message.success(res.msg);
+            const arr = { //社团表单
+              id: 0,
+              createuser: "",
+              desction: "",
+              name: ""
+            };
+            this.formshetuan=arr;
+          } else {
+            this.$message.error(res.msg);
+          }
+        } else {
+          const {data: res} = await this.$http.post("api/association/updateAss",this.formshetuan)
+          if (res.code == 1) {
+            this.$message.success(res.msg);
+            const arr = { //社团表单
+              id: 0,
+              createuser: "",
+              desction: "",
+              name: ""
+            };
+            this.formshetuan=arr;
+          } else {
+            this.$message.error(res.msg);
+          }
+        }
+        this.quxiao = false;
+        await this.assocation();
+      },
+
+
 
     },
     //只显示前10个字符

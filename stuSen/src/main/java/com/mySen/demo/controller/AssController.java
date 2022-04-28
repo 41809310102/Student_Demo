@@ -55,7 +55,7 @@ public class AssController {
             List<Association> list = mapper.selectAcc();
                 map.put("data",list);
                 map.put("code",0);
-                map.put("msg","社团添加失败!");
+                map.put("msg","获取社团信息成功");
         }catch (Exception e){
             System.out.println(e.toString());
             map.put("code",-1);
@@ -97,7 +97,7 @@ public class AssController {
      * @Desc 社团删除接口
      * @return map
      */
-    @PostMapping("api/association/delSelect")
+    @GetMapping("api/association/delSelect")
     public Map<String,Object> delAssoc(@RequestParam int id){
         Map<String,Object> map = new HashMap<>();
         try{
