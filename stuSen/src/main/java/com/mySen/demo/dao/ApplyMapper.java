@@ -23,4 +23,5 @@ public interface ApplyMapper {
     public  int delApply(int id);
 
     public int  updatestate(int id,String state);
+
 }

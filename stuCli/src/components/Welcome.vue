@@ -152,7 +152,7 @@
                 </div>
               </div></el-col>
               <el-col :span="6"><div class="grid-content bg-purple">
-                <img src="../assets/icon/m8.png" @click="mydata" class="image">
+                <img src="../assets/icon/m8.png" @click="jifen" class="image">
                 <span class="mtext">积分管理</span>
               </div></el-col>
               <el-col :span="6"><div class="grid-content bg-purple">
@@ -199,7 +199,7 @@
           <el-col :span="6"><div class="grid-content bg-purple">
             <el-card style="width: 220px;height: 75px;" :body-style="{ padding: '0px' }">
               <img src="../assets/icon/5.png" class="image">
-              <span class="mytext1"><el-button type="text">数据汇总</el-button></span>
+              <span class="mytext1"><el-button @click="mydatas" type="text">数据汇总</el-button></span>
             </el-card>
           </div></el-col>
           <el-col :span="6"><div class="grid-content bg-purple">
@@ -461,8 +461,8 @@
       },
 
       //进入我的资料页面
-       mydata(){
-         this.$router.push("/wxuser");
+       mydatas(){
+         this.$router.push("/mydata");
        },
       //进入我的成绩界面
        mygrade(){
@@ -487,6 +487,13 @@
       //进入问卷填写页面
       myquestions(){
         this.$router.push("/myquestion")
+      },
+      //进入数据统计页面
+      mydata(){
+        this.$router.push("/wxuser")
+      },
+      jifen(){
+        this.$router.push("/actionadmin")
       },
        //获取二维码
       async   getCode(){

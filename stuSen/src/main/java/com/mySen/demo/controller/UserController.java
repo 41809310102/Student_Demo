@@ -1,6 +1,9 @@
 package com.mySen.demo.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.mySen.demo.dao.UserMapper;
+import com.mySen.demo.model.Action;
+import com.mySen.demo.model.QueryInfo;
 import com.mySen.demo.model.User;
 import com.mySen.demo.service.IsUserservice;
 import com.mySen.demo.util.OBSUtils;
@@ -14,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.lang.System.out;
@@ -30,6 +34,8 @@ public class UserController {
 
     @Autowired
     private IsUserservice isUserservice;
+    @Autowired
+    private UserMapper userMapper;
     /**
      * @param user 用户信息
      * @Desc 用户注册
@@ -129,5 +135,22 @@ public class UserController {
         }
     }
 
+
+    /**
+     * @param
+     * @Desc 管理员获取学生信息表
+     * @return map
+     */
+    @PostMapping("api/User/getUserlist")
+    public  Map<String,Object> getUserlist(@RequestBody QueryInfo queryInfo){
+        int numbers =userMapper.getUserCounts("%"+queryInfo.getQuery()+"%");
+        int pageStart = (queryInfo.getPageNum()-1)*queryInfo.getPageSize();
+        List<User> applys =userMapper.getAllUser("%"+queryInfo.getQuery()+"%",pageStart,queryInfo.getPageSize());
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("number",numbers);
+        res.put("data",applys);
+        res.put("code",1);
+        return res;
+    }
 
 }

@@ -1,6 +1,9 @@
 package com.mySen.demo.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.mySen.demo.dao.ActionMapper;
 import com.mySen.demo.model.Action;
+import com.mySen.demo.model.QueryInfo;
 import com.mySen.demo.service.IsActionservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,8 @@ import java.util.Map;
 public class ActionController {
     @Autowired
     private IsActionservice isActionservice;
+    @Autowired
+    private ActionMapper actionMapper;
     public SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     /**
      * @param
@@ -92,5 +97,60 @@ public class ActionController {
         return map;
     }
 
+    /**
+     * @param
+     * @Desc 管理员获取活动信息()
+     * @return map
+     */
+    @PostMapping("api/Action/getselectPageadmin")
+    public  Map<String,Object> getselectPageadmin(@RequestBody QueryInfo queryInfo){
+        int numbers =actionMapper.getActionCounts("%"+queryInfo.getQuery()+"%");
+        int pageStart = (queryInfo.getPageNum()-1)*queryInfo.getPageSize();
+        List<Action> applys =actionMapper.getAllAction("%"+queryInfo.getQuery()+"%",pageStart,queryInfo.getPageSize());
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("number",numbers);
+        res.put("data",applys);
+        res.put("code",1);
+        return res;
+    }
+
+
+
+    /**
+     * @param
+     * @Desc 管理员删除活动信息()
+     * @return String
+     */
+    @GetMapping("api/Action/deleteAction")
+    public String deleteActionadmin(@RequestParam  int id){
+        int i =actionMapper.deleteAction(id);
+        return i>0? "success":"error";
+    }
+
+    /**
+     * @param
+     * @Desc 保存修改后的活动信息
+     * @return map
+     */
+    @PostMapping("api/Action/updateAction")
+    public Map<String,Object> updateAction(@RequestBody Action action){
+        Map<String,Object> map = new HashMap<>();
+        try{
+            action.setActiontime(sdf.format(new Date()));
+            int i =isActionservice.updateAction(action);
+            if(i>0){
+                map.put("code",1);
+                map.put("msg","活动修改成功");
+            }else{
+                map.put("code",0);
+                map.put("msg","活动修改失败!");
+            }
+        }catch (Exception e){
+            System.out.println(e.toString());
+            map.put("code",-1);
+            map.put("msg","服务器错误！");
+        }
+        return map;
+    }
 
 }

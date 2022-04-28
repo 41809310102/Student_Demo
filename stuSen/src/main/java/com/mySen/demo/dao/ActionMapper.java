@@ -23,8 +23,12 @@ public interface ActionMapper {
 
     public List<Action> selectActionbycheck(int id, String title);
 
-    public int updateAction(Action action);
-
     public int deleteAction(int id);
+
+    public int getActionCounts(String title);
+
+    public List<Action> getAllAction(String title,int pageStart,int pageSize);
+
+    public int updateAction(Action action);
 
 }

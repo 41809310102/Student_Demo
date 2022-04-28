@@ -10,6 +10,23 @@
     (#{username},#{password},#{role},#{isdelect})
     </insert>
 
+
+    <select id="getAllUser" resultType="com.mySen.demo.model.User">
+        SELECT * FROM t_user
+        <if test="cardid !=null ">
+            WHERE cardid like #{cardid} and role!='教师'
+        </if>
+        LIMIT #{pageStart},#{pageSize}
+    </select>
+
+
+    <select id="getUserCounts" resultType="java.lang.Integer">
+        SELECT count(*) FROM t_user
+        <if test="cardid !=null ">
+            WHERE cardid like #{cardid} and role!='教师'
+        </if>
+    </select>
+
     <select id="selectUser" resultType="com.mySen.demo.model.User">
      SELECT * FROM  t_user WHERE  username=#{username}
     and password=#{password} and role=#{role}
@@ -20,7 +37,7 @@
     </select>
 
      <update id="updateUser">
-     UPDATE  t_user SET username=#{username},major=#{major},
+     UPDATE  t_user SET username=#{username},major=#{major},password=#{password},grade=#{grade},
      shool_group=#{shool_group},cardid=#{cardid},sex=#{sex},desction=#{desction},age=#{age},hobby=#{hobby},
      association=#{association} WHERE id=#{id}
      </update>

@@ -11,6 +11,22 @@
     </insert>
 
 
+    <select id="getAllAction" resultType="com.mySen.demo.model.Action">
+        SELECT * FROM t_action
+        <if test="title !=null ">
+            WHERE title like #{title}
+        </if>
+        LIMIT #{pageStart},#{pageSize}
+    </select>
+
+
+    <select id="getActionCounts" resultType="java.lang.Integer">
+        SELECT count(*) FROM t_action
+        <if test="title !=null ">
+            WHERE title like #{title}
+        </if>
+    </select>
+
     <select id="selectActiontbyid" resultType="com.mySen.demo.model.Action">
         SELECT * FROM t_action where id=#{id}
     </select>
@@ -24,5 +40,17 @@
         SELECT * FROM t_action where title like #{title}
     </select>
 
+    <delete id="deleteAction">
+       DELETE FROM t_action  WHERE id=#{id}
+    </delete>
+
+
+    <update id="updateAction">
+     UPDATE t_action SET actiontime=#{actiontime},
+     starttime=#{starttime},endtime=#{endtime},title=#{title},jifen=#{jifen},
+     limitnum=#{limitnum},actionUser=#{actionUser}
+      WHERE id=#{id}
+
+    </update>
 
 </mapper>

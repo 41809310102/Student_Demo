@@ -21,7 +21,7 @@ public class User {
     private String sex;
     private String desction;
     private String age;
-    private String grade; //学分
+    private float grade; //积分
     private String hobby;//爱好
     private String association;//社团
     private int isdelect;//冻结标记

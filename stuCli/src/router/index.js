@@ -4,11 +4,10 @@ import Login from '../components/Login.vue'
 import success from '../components/Success.vue'
 import Home from '../components/Home.vue'
 import Welcome from '../components/Welcome.vue'
-import vaccess from '../components/vaccadmin/vaccess.vue'
 import log from '../components/vaccadmin/vacclog.vue'
 import myapply from '../components/useradmin/myapply.vue'
 import isout from '../components/room/isout.vue'
-import Aiadmin from '../components/room/Aiadmin.vue'
+import actionadmin from '../components/vaccadmin/actionadmin.vue'
 import wxuser from '../components/useradmin/wxuser.vue'
 import mygrade from '../components/useradmin/mygrade.vue'
 import mylog from '../components/useradmin/mylog.vue'
@@ -33,7 +32,6 @@ const routes = [
     redirect: '/welcome',
     children: [
       { path:'/welcome', component: Welcome},
-      { path:'/vaccess', component: vaccess},
       { path:'/log', component: log},
     ],
   },
@@ -45,11 +43,13 @@ const routes = [
       { path:'/welcome', component: Welcome},
       { path:'/myapply', component: myapply},
       { path:'/isout', component: isout},
-      { path:'/Aiadmin', component:  Aiadmin},
       { path:'/myvote', component:  myvote},
       { path:'/question', component:  question},
       { path:'/myquestion', component:  myquestion},
       { path:'/mydata', component:  mydata},
+      { path:'/mylog', component:mylog},
+      { path:'/mygrade', component: mygrade},
+      { path:'/wxuser', component: wxuser},
     ],
   },
 
@@ -59,9 +59,7 @@ const routes = [
     redirect: '/welcome',
     children: [
       { path:'/welcome', component: Welcome},
-      { path:'/mylog', component:mylog},
-      { path:'/mygrade', component: mygrade},
-      { path:'/wxuser', component: wxuser},
+      { path:'/actionadmin', component: actionadmin},
     ],
   },
 
