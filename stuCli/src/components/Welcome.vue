@@ -156,9 +156,16 @@
                 <span class="mtext">积分管理</span>
               </div></el-col>
               <el-col :span="6"><div class="grid-content bg-purple">
-                <img src="../assets/icon/m9.png" @click="mydata" class="image">
+                <img src="../assets/icon/m9.png" @click="assocation" class="image">
                 <span class="mtext">社团管理</span>
               </div></el-col>
+              <el-dialog title="社团管理" :visible.sync="setuan">
+                <el-table :data="assoc">
+                  <el-table-column property="name" label="社团名称" width="100"></el-table-column>
+                  <el-table-column property="craeteuser" label="创建人" width="100"></el-table-column>
+                  <el-table-column property="desction" label="社团描述"  width="100"></el-table-column>
+                </el-table>
+              </el-dialog>
               <el-col :span="6"><div class="grid-content bg-purple">
                 <img src="../assets/icon/m2.png" @click="mydata" class="image">
                 <span class="mtext">成绩导入</span>
@@ -379,6 +386,7 @@
   export default {
     data () {
       return {
+        setuan:false,//创建社团管理页面
         addactionwin:false,//新建活动窗口
         publicMoney:false,//班费公开，私密权限
         Money:false,//班费明细
@@ -386,6 +394,7 @@
         votewin:false,//投票创建窗口开关
         codeurl:'', //二维码路由
         signlog:[],//签到记录
+        assoc:[],//社团信息记录
         dialogVisible:false,
         queryInfo: {
           query: "",
@@ -502,7 +511,6 @@
         const { data: res } = await this.$http.post("/api/ercode/getCodeUrl");
         this.codeurl= res; // 将返回数据赋值
       },
-
       //获取用户打卡记录
       async   getlog(){
         // 调用post请求
@@ -593,7 +601,6 @@
         this.formInline.money =row.money;
         this.formInline.id = row.id;
       },
-
       //记账删除
       async delMoney(id) {
         const confirmResult = await this.$confirm('是否确认删除该班费记录?', '提示', {
@@ -613,7 +620,6 @@
           this.$message.error(res.msg)
         }
       },
-
       //创建活动逻辑
       async addactionofSen(){
         this.actionform.actionUser = window.sessionStorage.getItem("user");
@@ -623,6 +629,16 @@
           this.addactionwin = false;
         } else {
           this.$message.error(res.msg)
+        }
+      },
+      //获取当前社团信息
+      async assocation() {
+        this.setuan = true;
+        const {data: res} = await this.$http.post("api/association/SelectAss")
+        if (res.code == 1) {
+          this.assoc = res.data;
+        } else {
+          this.$message.error(res.msg);
         }
       }
 
