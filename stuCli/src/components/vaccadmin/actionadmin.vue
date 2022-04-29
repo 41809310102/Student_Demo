@@ -33,8 +33,9 @@
                         <el-table-column
                                 fixed="right"
                                 label="操作"
-                                width="100">
+                                width="140">
                             <template slot-scope="scope">
+                                <el-button @click="getCode(scope.row)" type="text" size="small">签到码</el-button>
                                 <el-button @click="getdel(scope.row)" type="text" size="small">删除</el-button>
                                 <el-button @click="getAction(scope.row)" type="text" size="small">编辑</el-button>
                             </template>
@@ -71,6 +72,24 @@
                         <div slot="footer" class="dialog-footer">
                             <el-button @click="dialogFormVisible = false">取 消</el-button>
                             <el-button type="primary" @click="isupdate">确 定</el-button>
+                        </div>
+                    </el-dialog>
+                    <el-dialog title="签到码设置"   :visible.sync="qiandaoSign"   width="30%">
+                        <el-form :model="form">
+                            <el-form-item label="活动名称" label-width="200">
+                                <el-input v-model="form.title" disabled autocomplete="off"></el-input>
+                            </el-form-item>
+                            <el-form-item label="签到地点:">
+                                <el-select v-model="local" placeholder="请选择签到地点">
+                                    <div v-for="item in locallist">
+                                        <el-option :label="item.localname" :value="item.localname"></el-option>
+                                    </div>
+                                </el-select>
+                            </el-form-item>
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click="qiandaoSign = false">取 消</el-button>
+                            <el-button type="primary" @click="createCode">确 定</el-button>
                         </div>
                     </el-dialog>
                 </el-tab-pane>
@@ -170,12 +189,14 @@
         data() {
             return {
                 num: 1,
+                local:"",
+                locallist:[],//签到位置获取
                 queryInfo: {
                     query: "",
                     pageNum: 1,
                     pageSize: 20,
                 },
-
+                qiandaoSign:false,//签到码设置接口
                 queryInfo1: {
                     query: "",
                     pageNum: 1,
@@ -232,6 +253,47 @@
                 }else{
                     this.$message.error(res.msg)
                 }
+            },
+            //设置签到码
+            getCode(row){
+                this.qiandaoSign = true;
+                this.form = row;
+                this.locallists();
+            },
+            //获取签到位置
+            async  locallists(){
+                const {data:res} = await this.$http.get("api/Local/getAlllocal");
+                if(res.code==1){
+                    this.locallist = res.data;
+                }else{
+                    this.$message.error(res.msg)
+                }
+            },
+           //创建二维码签到
+            async createCode() {
+                //获取当前位置经纬度
+                const code = {
+                    lat2: "",
+                    lng2: "",
+                    actionid: ""
+                };
+                for (let i = 0; i < this.locallist.length; i++) {
+                    if (this.locallist[i].localname == this.local) {
+                        code.lat2 = this.locallist[i].lat2;
+                        code.lng2 = this.locallist[i].lng2;
+                        code.actionid = this.form.id;
+                    }
+                }
+
+                const {data: res} = await this.$http.post("api/code/getcode", code);
+                if (res!=null) {
+                   this.$message.success("签到码创建成功，请前往首页签到打卡获取该码");
+                    this.qiandaoSign = false;
+                } else {
+                    this.$message.error("签到码创建失败，请重新设置");
+                    this.qiandaoSign = false;
+                }
+
             },
 
             async  getdel(row){

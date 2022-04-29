@@ -6,13 +6,32 @@
 <mapper namespace="com.mySen.demo.dao.SignMapper">
     <insert id="addSigninfo">
      INSERT INTO t_sign
-    (uid,local,uname,cardid,signtime,major,addsigntime,isdelect)  VALUE
-    (#{uid},#{local},#{uname},#{cardid},#{signtime},#{major},#{addsigntime},#{isdelect})
+    (uid,aid,local,uname,cardid,signtime,major,addsigntime,isdelect)  VALUE
+    (#{uid},#{aid},#{local},#{uname},#{cardid},#{signtime},#{major},#{addsigntime},#{isdelect})
     </insert>
 
     <select id="selectSign" resultType="com.mySen.demo.model.Sign">
      SELECT * FROM  t_sign WHERE  uid=#{uid} order by id desc
     </select>
 
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT count(*) FROM t_sign
+        <if test="uname !=null ">
+            WHERE uname like #{uname} and aid=#{id}
+        </if>
+    </select>
+
+    <select id="selectAllsign" resultType="com.mySen.demo.model.Sign">
+        SELECT * FROM t_sign
+        <if test="uname !=null ">
+            WHERE uname like #{uname} and aid=#{id}
+        </if>
+        LIMIT #{pageStart},#{pageSize}
+    </select>
+
+    <delete id="deleteSign">
+        delete from t_sign where id=#{id}
+    </delete>
 
 </mapper>

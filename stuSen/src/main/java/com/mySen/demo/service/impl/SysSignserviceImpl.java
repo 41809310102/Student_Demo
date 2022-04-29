@@ -24,4 +24,21 @@ public class SysSignserviceImpl implements IsSignservice {
     public List<Sign> selectSign(int uid) {
         return signMapper.selectSign(uid);
     }
+
+    @Override
+    public int selectCount(String uname, int id) {
+        return signMapper.selectCount(uname,id);
+    }
+
+    @Override
+    public List<Sign> selectAllsign(String uname, int id, int pageStart, int pageSize) {
+        return signMapper.selectAllsign(uname,id,pageStart,pageSize);
+    }
+
+    @Override
+    public int deleteSign(int id) {
+        return signMapper.deleteSign(id);
+    }
+
+
 }

@@ -48,21 +48,32 @@
                                 </el-switch></div>
                     </div></el-col>
                   </el-row>
-                  <el-table :data="MoneyData" height="350" border style="width: 60%"  :default-sort = "{prop: 'time', order: 'descending'}">
-                    <el-table-column prop="time" sortable label="日期" width="180"></el-table-column>
-                    <el-table-column prop="name" label="姓名" width="80"></el-table-column>
-                    <el-table-column prop="money" label="缴纳/元" width="80"></el-table-column>
-                    <el-table-column prop="addusername" label="记账人" width="100"></el-table-column>
-                    <el-table-column
-                            fixed="right"
-                            label="操作"
-                            width="100">
-                      <template slot-scope="scope">
-                        <el-button  @click="updateMoney(scope.row)" type="text" size="small">修改</el-button>
-                        <el-button type="text" @click="delMoney(scope.row.id)" size="small">删除</el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
+                  <el-row :gutter="20">
+                    <el-col :span="14"><div class="grid-content bg-purple">
+                      <el-table :data="MoneyData" height="350" border style="width: 100%"  :default-sort = "{prop: 'time', order: 'descending'}">
+                        <el-table-column prop="time" sortable label="日期" width="180"></el-table-column>
+                        <el-table-column prop="name" label="姓名" width="80"></el-table-column>
+                        <el-table-column prop="money" label="缴纳/元" width="80"></el-table-column>
+                        <el-table-column prop="addusername" label="记账人" width="100"></el-table-column>
+                        <el-table-column
+                                fixed="right"
+                                label="操作"
+                                width="100">
+                          <template slot-scope="scope">
+                            <el-button  @click="updateMoney(scope.row)" type="text" size="small">修改</el-button>
+                            <el-button type="text" @click="delMoney(scope.row.id)" size="small">删除</el-button>
+                          </template>
+                        </el-table-column>
+                      </el-table>
+                    </div></el-col>
+                    <el-col :span="8"><div class="grid-content bg-purple">
+                      <el-card>
+                          <div><el-tag type="success">班费数据统计表:</el-tag></div>
+                          <div style="height: 300px;width: 300px" id="main">
+                          </div>
+                      </el-card>
+                    </div></el-col>
+                  </el-row>
                 </el-dialog>
               </div></el-col>
               <el-col :span="6"><div class="grid-content bg-purple">
@@ -147,7 +158,7 @@
             <el-row :gutter="20">
               <el-col :span="6"><div class="grid-content bg-purple">
                 <div>
-                  <img src="../assets/icon/m4.png" @click="mydata" class="image">
+                  <img src="../assets/icon/m4.png" @click="qiandao" class="image">
                   <span class="mtext">签到管理</span>
                 </div>
               </div></el-col>
@@ -158,43 +169,43 @@
               <el-col :span="6"><div class="grid-content bg-purple">
                 <img src="../assets/icon/m9.png" @click="assocation" class="image">
                 <span class="mtext">社团管理</span>
+                <el-dialog title="社团管理" :visible.sync="setuan">
+                  <el-row :gutter="20">
+                    <el-col :span="16"><div class="grid-content bg-purple">
+                      <el-table :data="assoc" border   style="width: 80%">
+                        <el-table-column property="name" label="社团名称" width="100"></el-table-column>
+                        <el-table-column property="createuser" label="创建人" width="80"></el-table-column>
+                        <el-table-column property="desction" label="社团描述"  width="100"></el-table-column>
+                        <el-table-column fixed="right" label="操作" width="130">
+                          <template slot-scope="scope">
+                            <el-button v-if="!quxiao" @click="xiougaituandui(scope.row)" type="text" size="small"><el-tag size="mini" type="success">修改</el-tag></el-button>
+                            <el-button v-if="quxiao" @click="quxiaofun" type="text" size="small"><el-tag size="mini" type="success">取消</el-tag></el-button>
+                            <el-button @click="delTuandui(scope.row)" type="text" size="small"><el-tag size="mini" type="danger">删除</el-tag></el-button>
+                          </template>
+                        </el-table-column>
+                      </el-table>
+                    </div></el-col>
+                    <el-col :span="8"><div class="grid-content bg-purple">
+                      <el-card style="margin-left:-50px">
+                        <el-form :model="formshetuan">
+                          <el-form-item label="社团名称:" >
+                            <el-input v-model="formshetuan.name" autocomplete="off"></el-input>
+                          </el-form-item>
+                          <el-form-item label="创建人:" >
+                            <el-input v-model="formshetuan.createuser" autocomplete="off"></el-input>
+                          </el-form-item>
+                          <el-form-item label="描述:">
+                            <el-input v-model="formshetuan.desction" autocomplete="off"></el-input>
+                          </el-form-item>
+                          <el-form-item>
+                            <el-button type="primary" @click="updatasetuan">确定</el-button>
+                          </el-form-item>
+                        </el-form>
+                      </el-card>
+                    </div></el-col>
+                  </el-row>
+                </el-dialog>
               </div></el-col>
-              <el-dialog title="社团管理" :visible.sync="setuan">
-                <el-row :gutter="20">
-                  <el-col :span="16"><div class="grid-content bg-purple">
-                    <el-table :data="assoc" border   style="width: 80%">
-                      <el-table-column property="name" label="社团名称" width="100"></el-table-column>
-                      <el-table-column property="createuser" label="创建人" width="80"></el-table-column>
-                      <el-table-column property="desction" label="社团描述"  width="100"></el-table-column>
-                      <el-table-column fixed="right" label="操作" width="130">
-                        <template slot-scope="scope">
-                          <el-button v-if="!quxiao" @click="xiougaituandui(scope.row)" type="text" size="small"><el-tag size="mini" type="success">修改</el-tag></el-button>
-                          <el-button v-if="quxiao" @click="quxiaofun" type="text" size="small"><el-tag size="mini" type="success">取消</el-tag></el-button>
-                          <el-button @click="delTuandui(scope.row)" type="text" size="small"><el-tag size="mini" type="danger">删除</el-tag></el-button>
-                        </template>
-                      </el-table-column>
-                    </el-table>
-                  </div></el-col>
-                  <el-col :span="8"><div class="grid-content bg-purple">
-                    <el-card style="margin-left:-50px">
-                      <el-form :model="formshetuan">
-                      <el-form-item label="社团名称:" >
-                        <el-input v-model="formshetuan.name" autocomplete="off"></el-input>
-                      </el-form-item>
-                      <el-form-item label="创建人:" >
-                        <el-input v-model="formshetuan.createuser" autocomplete="off"></el-input>
-                      </el-form-item>
-                        <el-form-item label="描述:">
-                          <el-input v-model="formshetuan.desction" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                          <el-button type="primary" @click="updatasetuan">确定</el-button>
-                        </el-form-item>
-                      </el-form>
-                    </el-card>
-                  </div></el-col>
-                </el-row>
-              </el-dialog>
               <el-col :span="6"><div class="grid-content bg-purple">
                 <img src="../assets/icon/m2.png" @click="mydata" class="image">
                 <span class="mtext">成绩导入</span>
@@ -411,7 +422,7 @@
 </style>
 
 <script>
-
+  import * as echarts from 'echarts';
   export default {
     data () {
       return {
@@ -540,6 +551,9 @@
       jifen(){
         this.$router.push("/actionadmin")
       },
+      qiandao(){
+        this.$router.push("/sign")
+      },
        //获取二维码
       async   getCode(){
         // 调用post请求
@@ -626,6 +640,7 @@
         const {data: res} = await this.$http.get("api/Classfee/getallClass?major=" + window.sessionStorage.getItem("major"));
         if (res.code == 1){
           this.MoneyData = res.data;
+          this.getchart();//获取数据报表
         } else{
           this.$message.error(res.msg)
         }
@@ -752,6 +767,58 @@
         await this.assocation();
       },
 
+      //获取班费支出报表明细
+      async getchart() {
+        //获取id并初始化图表
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+        this.$message.success("正在统计班费使用情况")
+        const {data: res} = await this.$http.get("api/Echart/getallClass?major=" + window.sessionStorage.getItem("major"));
+        if (res.code == 1) {
+          option = {
+            tooltip: {
+              trigger: 'item'
+            },
+            legend: {
+              top: '5%',
+              left: 'center'
+            },
+            series: [
+              {
+                name: '班费统计:',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                itemStyle: {
+                  borderRadius: 10,
+                  borderColor: '#fff',
+                  borderWidth: 2
+                },
+                label: {
+                  show: false,
+                  position: 'center'
+                },
+                emphasis: {
+                  label: {
+                    show: true,
+                    fontSize: '40',
+                    fontWeight: 'bold'
+                  }
+                },
+                labelLine: {
+                  show: false
+                },
+                data: res.data
+              }
+            ]
+          };
+          option && myChart.setOption(option);
+        } else {
+          this.$message.error("删除失败")
+        }
+
+      },
 
 
     },

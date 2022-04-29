@@ -7,6 +7,7 @@ Page({
     scanCode1:'扫码',
     formdata: '',  
     foundlocation:'',
+    aid:'',//当前需要签到的活动
     lat1:'',
     lng1:'',
     lat2:'',
@@ -54,7 +55,8 @@ Page({
           if(res.data.code==0){
             that.setData({
               lat2:res.data.x,
-              lng2:res.data.y
+              lng2:res.data.y,
+              aid:res.data.actionid
              })
            //这里将二维码的数据获取，然后保存，进行签到确认
            wx.hideLoading();
@@ -125,7 +127,7 @@ Page({
   }
 },
 
-//正常打卡
+//提交打卡记录
 getSign(){
   var that = this;
   var user = wx.getStorageSync('user')
@@ -133,6 +135,7 @@ getSign(){
   var sign={
     "addsigntime": time,
     "cardid": user.cardid,
+    "aid":that.data.aid,
     "isdelect": 0,
     "local": that.data.foundlocation,
     "major": user.major,

@@ -4,7 +4,6 @@ import Login from '../components/Login.vue'
 import success from '../components/Success.vue'
 import Home from '../components/Home.vue'
 import Welcome from '../components/Welcome.vue'
-import log from '../components/vaccadmin/vacclog.vue'
 import myapply from '../components/useradmin/myapply.vue'
 import isout from '../components/room/isout.vue'
 import actionadmin from '../components/vaccadmin/actionadmin.vue'
@@ -15,6 +14,7 @@ import myvote from "../components/useradmin/myvote.vue";
 import question from "../components/useradmin/question.vue";
 import myquestion from "../components/useradmin/myquestion.vue";
 import mydata from "../components/useradmin/mydata.vue";
+import sign from "../components/vaccadmin/signapply.vue";
 Vue.use(VueRouter)
 
 const routes = [
@@ -32,7 +32,6 @@ const routes = [
     redirect: '/welcome',
     children: [
       { path:'/welcome', component: Welcome},
-      { path:'/log', component: log},
     ],
   },
   {
@@ -50,6 +49,7 @@ const routes = [
       { path:'/mylog', component:mylog},
       { path:'/mygrade', component: mygrade},
       { path:'/wxuser', component: wxuser},
+      { path:'/sign', component: sign},
     ],
   },
 

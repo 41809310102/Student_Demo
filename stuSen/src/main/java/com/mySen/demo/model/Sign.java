@@ -13,6 +13,7 @@ public class Sign {
 
     private int id;
     private int uid;
+    private int aid;//活动id
     private String signtime;
     private String local;
     private String uname;

@@ -15,4 +15,8 @@ public interface IsSignservice {
     public int  addSign(Sign sign);
 
     public List<Sign> selectSign(int uid);
+
+    public int selectCount(String uname,int id);
+    public List<Sign> selectAllsign(String uname,int id, int pageStart, int pageSize);
+    public int deleteSign(int id);
 }

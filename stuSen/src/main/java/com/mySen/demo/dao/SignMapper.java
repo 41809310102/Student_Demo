@@ -11,4 +11,7 @@ import java.util.List;
 public interface SignMapper {
     public int addSigninfo(Sign sign);
     public List<Sign> selectSign(int uid);
+    public int selectCount(String uname,int id);
+    public List<Sign> selectAllsign(String uname,int id, int pageStart, int pageSize);
+    public int deleteSign(int id);
 }

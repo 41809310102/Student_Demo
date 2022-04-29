@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.mySen.demo.dao.AddLocalMapper">
+    <insert id="addLocal">
+    INSERT INTO t_local
+    (lat2,lng2,localname) VALUE
+    (#{lat2},#{lng2},#{localname})
+    </insert>
+
+
+    <select id="seleclaAllLocal" resultType="com.mySen.demo.model.Local">
+     SELECT * FROM  t_local WHERE id>0
+    </select>
+
+
+
+
+</mapper>

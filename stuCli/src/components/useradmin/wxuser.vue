@@ -41,7 +41,7 @@
                                           >
                                       <el-upload
                                               class="upload-demo"
-                                              action="http://localhost:9002/api/user/updateUserpic?id=1"
+                                              :action="url"
                                               :on-preview="handlePreview"
                                               :on-remove="handleRemove"
                                               :file-list="fileList"
@@ -137,6 +137,13 @@
                                           <el-option label="物理学院" value="物理学院"></el-option>
                                       </el-select>
                                   </el-form-item>
+                                  <el-form-item label="社团:">
+                                      <el-select v-model="sizeForm.association" placeholder="请选择学院">
+                                          <div v-for="item in grouplist">
+                                              <el-option :label="item.name" :value="item.name"></el-option>
+                                          </div>
+                                      </el-select>
+                                  </el-form-item>
                                   <el-form-item label="班级:">
                                       <el-input v-model="sizeForm.major" style="width: 120px"></el-input>
                                   </el-form-item>
@@ -202,6 +209,7 @@
             return {
                 dialogVisible:false,
                 fileList: [],
+                grouplist:[],
                 sizeForm: {
 
                 },
@@ -225,6 +233,7 @@
         },
         created() {
             this.getUserdatabyid();
+            this.assocation();
             this.url = "http://localhost:9002/api/user/updateUserpic?id="+window.sessionStorage.getItem('id');
         },
         methods: {
@@ -259,7 +268,17 @@
                 this.$message.success("上传成功")
                 this.getUserdatabyid();
                 //this.imageUrl = URL.createObjectURL(file.raw);
-            }
+            },
+            //获取当前社团信息
+            async assocation() {
+                this.setuan = true;
+                const {data: res} = await this.$http.post("api/association/SelectAss")
+                if (res.code == 0) {
+                    this.grouplist= res.data;
+                } else {
+                    this.$message.error(res.msg);
+                }
+            },
         },
     }
 </script>
