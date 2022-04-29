@@ -47,6 +47,7 @@ public class UserController {
         Map<String,Object> map = new HashMap<>();
         try{
             user.setIsdelect(0);
+            user.setRole("普通学生");
             int i = isUserservice.addUser(user);
             if(i>0){
                 map.put("code",1);

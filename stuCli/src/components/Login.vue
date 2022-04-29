@@ -52,7 +52,7 @@
           <el-input v-model="denluForm.password1" placeholder="请确认密码"  prefix-icon="iconfont iconmima" type="text" clearable style="width:60%"></el-input>
         </el-form-item>
           <el-form-item prop="code">
-          <el-input v-model="denluForm.code1"  placeholder="验证码" prefix-icon="el-icon-key" type="text" style="width:30%;" clearable></el-input>
+          <el-input v-model="denluForm.code"  placeholder="验证码" prefix-icon="el-icon-key" type="text" style="width:30%;" clearable></el-input>
            <div style="border: none;" class="code" @click="refreshCode" >
                <s-Identify :identifyCode="identifyCode"></s-Identify>
       </div>
@@ -182,17 +182,30 @@ export default {
         if(this.denluForm.code==this.identifyCode){
           // 调用get请求
         const {data :res} = await this.$http.post("api/user/adduser", this.denluForm);
-         if(res=='success') {
-          // window.sessionStorage.setItem('flag','ok'); // session 放置
+         if(res.code==1) {
+          window.sessionStorage.setItem('flag','ok'); // session 放置
            this.$message.success("注册成功！！！");
-           this.$router.push({ path: "/home"});
+             // 调用get请求
+             const {data :res} = await this.$http.post("api/user/loginuser", this.denluForm);
+             if (res.code==1) {
+                 var arrvid = [];
+                 window.sessionStorage.setItem('user',res.user.username); // session 放置
+                 window.sessionStorage.setItem('id',res.user.id); // session 放置
+                 window.sessionStorage.setItem('major',res.user.major); // session 放置
+                 //window.sessionStorage.setItem('cardid',res.user.cardid); // session 放置
+                 window.sessionStorage.setItem('flag','ok'); // session 放置
+                 this.$message.success("自动登录成功！");
+                 this.$router.push({ path: "/home"});
+             }else{
+                 this.$message.error(res.msg);
+             }
          }else if(res=='no'){
           this.$message.error("该昵称已经存在,请重新输入昵称");
          }else{
            this.$message.error("注册失败")
          }
         }else{
-          this.$message.error("验证码错误，请重新验证！")
+          this.$message.error("验证码错误，请重新验证！"+this.identifyCode)
         }
       });
     },
