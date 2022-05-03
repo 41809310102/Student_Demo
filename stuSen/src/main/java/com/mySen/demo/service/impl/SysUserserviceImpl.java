@@ -6,6 +6,8 @@ import com.mySen.demo.service.IsUserservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SysUserserviceImpl  implements IsUserservice {
     @Autowired
@@ -34,5 +36,15 @@ public class SysUserserviceImpl  implements IsUserservice {
     @Override
     public User selectUserbyid(int id) {
        return userMapper.selectUserbyid(id);
+    }
+
+    @Override
+    public List<User> getGradeTop() {
+        return userMapper.getGradeTop();
+    }
+
+    @Override
+    public List<User> getAlluser() {
+        return userMapper.getAlluser();
     }
 }

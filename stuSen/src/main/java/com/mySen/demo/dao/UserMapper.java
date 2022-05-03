@@ -29,5 +29,8 @@ public interface UserMapper {
 
     public int getUserCounts(String cardid);
 
+    public List<User> getGradeTop();
+
+    public List<User> getAlluser();
 
 }

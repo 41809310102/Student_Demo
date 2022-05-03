@@ -3,11 +3,13 @@ package com.mySen.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.mySen.demo.dao.UserMapper;
 import com.mySen.demo.model.Action;
+import com.mySen.demo.model.Pienode;
 import com.mySen.demo.model.QueryInfo;
 import com.mySen.demo.model.User;
 import com.mySen.demo.service.IsUserservice;
 import com.mySen.demo.util.OBSUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,10 +19,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import static java.lang.System.out;
+import static java.lang.System.setOut;
 
 /**
  * 用户逻辑
@@ -153,5 +157,75 @@ public class UserController {
         res.put("code",1);
         return res;
     }
+
+    /**
+     * @param
+     * @Desc 获取当前用户积分排行榜
+     * @return map
+     */
+
+    @PostMapping("api/user/gradetop")
+    public Map<String,Object> getGradeTop(){
+        Map<String,Object> map = new HashMap<>();
+        try{
+            List<User> list = isUserservice.getGradeTop();
+            if(list.size()>0){
+                map.put("data",list);
+                map.put("code",1);
+                map.put("msg","排行获取成功");
+                map.put("number",list.size());
+            }else{
+                map.put("data",list);
+                map.put("code",0);
+                map.put("msg","当前尚没有学生进入排行榜");
+            }
+        }catch (Exception e){
+            map.put("code",-1);
+            map.put("msg","服务器好像出现问题");
+            out.println(e.toString());
+        }
+        return map;
+    }
+
+
+    /**
+     * @param
+     * @Desc 获取当前用户积分排行榜
+     * @return map
+     */
+
+    @PostMapping("api/user/getCross")
+    public Map<String,Object> getGradeCrose(){
+        Map<String,Object> map = new HashMap<>();
+        List<Pienode> lists = new LinkedList<>();
+        try{
+            List<User> list = isUserservice.getAlluser();
+            int a = 0; //保存积分通过的人
+            if(list.size()>0){
+              for(User user : list){
+                  if(user.getGrade()>6){
+                      a+=1;
+                  }
+              }
+              int b  = list.size()-a;
+              Pienode pienode = new Pienode(); pienode.setValue(a); pienode.setName("当前积分合格人数");
+              Pienode pienode1 = new Pienode(); pienode1.setName("当前积分不合格人数");pienode1.setValue(b);
+              lists.add(pienode); lists.add(pienode1);
+                map.put("data",lists);
+                map.put("code",0);
+                map.put("msg","当前数据获取成功");
+            }else{
+                map.put("data",lists);
+                map.put("code",0);
+                map.put("msg","当前数据为空");
+            }
+        }catch (Exception e){
+            map.put("code",-1);
+            map.put("msg","服务器好像出现问题");
+            out.println(e.toString());
+        }
+        return map;
+    }
+
 
 }

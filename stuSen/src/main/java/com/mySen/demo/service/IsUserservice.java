@@ -2,6 +2,8 @@ package com.mySen.demo.service;
 
 import com.mySen.demo.model.User;
 
+import java.util.List;
+
 public interface IsUserservice {
     /**
      * 添加用户信息
@@ -19,7 +21,8 @@ public interface IsUserservice {
 
     public User selectUserbyid(int id);
 
+    public List<User> getGradeTop();
 
-
+    public List<User> getAlluser();
 
 }

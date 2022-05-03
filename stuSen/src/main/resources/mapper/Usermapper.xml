@@ -50,5 +50,13 @@
      UPDATE  t_user SET grade=#{grade} WHERE id=#{id}
     </update>
 
+    <select id="getGradeTop" resultType="com.mySen.demo.model.User">
+    select * from  t_user where grade>8 order by grade desc
+    </select>
+
+    <select id="getAlluser" resultType="com.mySen.demo.model.User">
+        select * from t_user WHERE id>0;
+    </select>
+
 
 </mapper>
