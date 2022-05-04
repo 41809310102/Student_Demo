@@ -9,7 +9,7 @@
             <el-tabs type="border-card">
                 <el-tab-pane label="签到记录">
                     <el-row :gutter="25">
-                        <el-col :span="6">
+                        <el-col :span="8">
                             <el-form ref="form" :inline="true" :model="acction" label-width="60px" size="mini">
                                 <el-form-item label="选择活动:" label-width="200">
                                     <el-select v-model="acction.name" placeholder="请选择活动">
@@ -20,7 +20,7 @@
                                 </el-form-item>
                                 </el-form>
                         </el-col>
-                        <el-col :span="3">
+                        <el-col :span="5">
                             <el-button type="success" @click="getallSignlog" size="mini">确定</el-button>
                             <el-button type="danger" @click="addSign" size="mini">补签</el-button>
                         </el-col>
