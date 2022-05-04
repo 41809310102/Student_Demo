@@ -78,7 +78,7 @@ public class UserController {
     public Map<String,Object> loginUser(@RequestBody User users){
         Map<String,Object> map = new HashMap<>();
         try{
-            User user = isUserservice.selectUser(users.getUsername(),users.getPassword(),"普通学生");
+            User user = isUserservice.selectUser(users.getUsername(),users.getPassword());
             if(user==null){
                 map.put("code",-2);
                 map.put("msg","账号或密码错误，请重新登录");

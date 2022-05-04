@@ -155,6 +155,7 @@ export default {
              window.sessionStorage.setItem('user',res.user.username); // session 放置
              window.sessionStorage.setItem('id',res.user.id); // session 放置
              window.sessionStorage.setItem('major',res.user.major); // session 放置
+             window.sessionStorage.setItem('role',res.user.role); // session 放置
              //window.sessionStorage.setItem('cardid',res.user.cardid); // session 放置
            window.sessionStorage.setItem('flag','ok'); // session 放置
            this.$message.success(res.msg);

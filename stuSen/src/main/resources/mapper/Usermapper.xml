@@ -29,7 +29,7 @@
 
     <select id="selectUser" resultType="com.mySen.demo.model.User">
      SELECT * FROM  t_user WHERE  username=#{username}
-    and password=#{password} and role=#{role}
+    and password=#{password}
     </select>
 
     <select id="selectUserbyid" resultType="com.mySen.demo.model.User">

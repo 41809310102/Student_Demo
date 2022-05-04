@@ -19,8 +19,8 @@ public class SysUserserviceImpl  implements IsUserservice {
     }
 
     @Override
-    public User selectUser(String username, String password, String role) {
-      return userMapper.selectUser(username,password,role);
+    public User selectUser(String username, String password) {
+      return userMapper.selectUser(username,password);
     }
 
     @Override

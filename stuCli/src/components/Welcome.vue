@@ -76,7 +76,7 @@
                   </el-row>
                 </el-dialog>
               </div></el-col>
-              <el-col :span="6"><div class="grid-content bg-purple">
+              <el-col v-if="studentadmin" :span="6"><div class="grid-content bg-purple">
                 <img src="../assets/icon/m6.png" @click="votewin=true" class="image">
                 <span class="mtext">发起投票</span>
                 <el-dialog title="添加投票" :visible.sync="votewin" width="30%">
@@ -122,13 +122,13 @@
                 </el-dialog>
 
               </div></el-col>
-              <el-col :span="6"><div class="grid-content bg-purple">
+              <el-col v-if="studentadmin" :span="6"><div class="grid-content bg-purple">
                 <img src="../assets/icon/m7.png" @click="myquestion" class="image">
                 <span class="mtext">发起问卷</span>
               </div></el-col>
-              <el-col :span="6"><div class="grid-content bg-purple">
+              <el-col v-if="studentadmin" :span="6"><div class="grid-content bg-purple">
                 <img src="../assets/icon/m5.png" @click="addactionwin = true" class="image">
-                <span class="mtext">新建活动</span>
+                <span  class="mtext">新建活动</span>
                 <el-dialog title="新建活动" :visible.sync="addactionwin" width="40%">
                   <el-form :model="actionform">
                     <el-form-item label="活动名称:" label-width="120" >
@@ -156,17 +156,17 @@
             </el-row>
             <el-divider></el-divider>
             <el-row :gutter="20">
-              <el-col :span="6"><div class="grid-content bg-purple">
+              <el-col v-if="teacheradmin" :span="6"><div class="grid-content bg-purple">
                 <div>
                   <img src="../assets/icon/m4.png" @click="qiandao" class="image">
                   <span class="mtext">签到管理</span>
                 </div>
               </div></el-col>
-              <el-col :span="6"><div class="grid-content bg-purple">
+              <el-col v-if="teacheradmin" :span="6"><div class="grid-content bg-purple">
                 <img src="../assets/icon/m8.png" @click="jifen" class="image">
                 <span class="mtext">积分管理</span>
               </div></el-col>
-              <el-col :span="6"><div class="grid-content bg-purple">
+              <el-col v-if="teacheradmin" :span="6"><div class="grid-content bg-purple">
                 <img src="../assets/icon/m9.png" @click="assocation" class="image">
                 <span class="mtext">社团管理</span>
                 <el-dialog title="社团管理" :visible.sync="setuan">
@@ -206,7 +206,7 @@
                   </el-row>
                 </el-dialog>
               </div></el-col>
-              <el-col :span="6"><div class="grid-content bg-purple">
+              <el-col v-if="teacheradmin" :span="6"><div class="grid-content bg-purple">
                 <img src="../assets/icon/m2.png" @click="mydata" class="image">
                 <span class="mtext">成绩导入</span>
               </div></el-col>
@@ -426,6 +426,8 @@
   export default {
     data () {
       return {
+        studentadmin:false,
+        teacheradmin:false,
         quxiao:false,
         setuan:false,//创建社团管理页面
         addactionwin:false,//新建活动窗口
@@ -505,10 +507,12 @@
       }
     },
     mounted: function () {
+
     },
 
     created() {
       this.getlog();
+      this.getroot();
     },
 
     methods: {
@@ -819,7 +823,16 @@
         }
 
       },
-
+      //判断当前用户的身份
+      getroot(){
+        const role = window.sessionStorage.getItem("role");
+        if(role==="班干部"){
+          this.studentadmin = true;
+        }else if(role==="教师"){
+          this.studentadmin = true;
+          this.teacheradmin = true;
+        }
+      }
 
     },
     //只显示前10个字符

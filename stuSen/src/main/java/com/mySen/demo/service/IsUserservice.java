@@ -13,7 +13,7 @@ public interface IsUserservice {
      */
     public int  addUser(User user);
 
-    public User selectUser(String username,String password,String role);
+    public User selectUser(String username,String password);
 
     public int updateUserofid(User user);
 

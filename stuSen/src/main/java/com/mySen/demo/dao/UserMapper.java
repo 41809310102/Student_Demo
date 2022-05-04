@@ -17,7 +17,7 @@ public interface UserMapper {
 
     public int addUserinfo(User user);
 
-    public User selectUser(String username,String password,String role);
+    public User selectUser(String username,String password);
 
     public int updateUser(User user);
 
