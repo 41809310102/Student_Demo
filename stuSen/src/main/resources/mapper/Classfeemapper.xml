@@ -6,8 +6,8 @@
 <mapper namespace="com.mySen.demo.dao.ClassfeeMapper">
     <insert id="addClassfeeinfo">
      INSERT INTO t_classfee
-     (name,addusername,major,time,money) VALUE
-     (#{name},#{addusername},#{major},#{time},#{money})
+     (name,addusername,major,time,money,bz) VALUE
+     (#{name},#{addusername},#{major},#{time},#{money},#{bz})
     </insert>
 
 

@@ -29,11 +29,14 @@
                     </div></el-col>
                     <el-col :span="18" v-if="innerVisible"><div class="grid-content bg-purple">
                       <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                        <el-form-item label="缴费人:">
-                          <el-input v-model="formInline.name"  clearable placeholder="输入缴费人姓名"></el-input>
+                        <el-form-item label="姓名:">
+                          <el-input v-model="formInline.name"  clearable placeholder="输入缴纳/支出人姓名" style="width: 120px;"></el-input>
                         </el-form-item>
                         <el-form-item label="费用：">
-                          <el-input v-model="formInline.money"  clearable placeholder="输入缴费金额"></el-input>
+                          <el-input v-model="formInline.money"  clearable placeholder="金额" style="width: 120px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="备注：">
+                          <el-input v-model="formInline.bz"  clearable placeholder="备注" style="width: 120px;"></el-input>
                         </el-form-item>
                         <el-form-item>
                           <el-button type="primary" @click="addMoney">保存</el-button>
@@ -51,9 +54,16 @@
                   <el-row :gutter="20">
                     <el-col :span="14"><div class="grid-content bg-purple">
                       <el-table :data="MoneyData" height="350" border style="width: 100%"  :default-sort = "{prop: 'time', order: 'descending'}">
-                        <el-table-column prop="time" sortable label="日期" width="180"></el-table-column>
+                        <el-table-column prop="time" sortable label="日期" width="140"></el-table-column>
                         <el-table-column prop="name" label="姓名" width="80"></el-table-column>
                         <el-table-column prop="money" label="缴纳/元" width="80"></el-table-column>
+                        <el-table-column prop="bz" label="备注" width="100">
+                          <template slot-scope="scope">
+                            <el-popover placement="top-start" title="" width="100" trigger="hover" effect="dark" >{{scope.row.bz}}
+                              <span v-model="scope.row.bz" slot="reference" style="color:blue">{{scope.row.bz| ellipsis}}</span>
+                            </el-popover>
+                          </template>
+                        </el-table-column>
                         <el-table-column prop="addusername" label="记账人" width="100"></el-table-column>
                         <el-table-column
                                 fixed="right"
@@ -507,6 +517,7 @@
           money:"",
           addusername:"",
           major:"",
+          bz:"",
           config:false,
         },
       }
@@ -861,7 +872,7 @@
       ellipsis(value){
         if (!value) return '';
         if (value.length > 8) {
-          return value.slice(0,8) + '...'
+          return value.slice(0,6) + '...'
         }
         return value
       }

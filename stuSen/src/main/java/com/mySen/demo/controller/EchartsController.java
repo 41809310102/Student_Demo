@@ -39,7 +39,7 @@ public class EchartsController {
             }
             List<Pienode> list = new LinkedList<>();
             Pienode node = new Pienode();
-            node.setName("班费收入");
+            node.setName("班费余额");
             node.setValue(a);
             Pienode node1 = new Pienode();
             node1.setName("班费支出");

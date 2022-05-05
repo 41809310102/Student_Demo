@@ -14,6 +14,7 @@ public class Classfee {
     private String addusername;
     private String major;
     private String time;
+    private String bz;//备注
     private float money;
 
 
