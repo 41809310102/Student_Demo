@@ -356,8 +356,8 @@
                       <el-timeline-item
                               v-for="(activity, index) in activities"
                               :key="index"
-                              :timestamp="activity.timestamp">
-                        {{activity.content}}
+                              :timestamp="activity.starttime">
+                        {{activity.title}}
                       </el-timeline-item>
                     </el-timeline>
                   </div>
@@ -477,17 +477,9 @@
           title: ""
         },
         activities: [{
-          content: '活动按期开始',
-          timestamp: '2018-04-15'
-        }, {
-          content: '通过审核',
-          timestamp: '2018-04-13'
-        }, {
-          content: '创建成功',
-          timestamp: '2018-04-11'
-        }, {
-          content: '创建成功',
-          timestamp: '2018-04-11'
+             title:"dsnsdnd",
+             starttime: "2022-4-23 10：00",
+             endtime: "2022-4-23 11：00",
         }],
         labelPosition: 'right',
         formLabelAlign: {
@@ -526,6 +518,7 @@
     created() {
       this.getlog();
       this.getroot();
+      this.getactions();
     },
 
     methods: {
@@ -705,6 +698,16 @@
         const {data: res} = await this.$http.post("api/association/SelectAss")
         if (res.code == 0) {
           this.assoc = res.data;
+        } else {
+          this.$message.error(res.msg);
+        }
+      },
+
+      //获取当前用户参加活动清单
+      async getactions() {
+        const {data: res} = await this.$http.get("api/Apply/getapplybyid?id="+window.sessionStorage.getItem("id"))
+        if (res.code == 1) {
+          this.activities= res.data;
         } else {
           this.$message.error(res.msg);
         }
