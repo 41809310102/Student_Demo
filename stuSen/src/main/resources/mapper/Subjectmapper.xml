@@ -6,8 +6,8 @@
 <mapper namespace="com.mySen.demo.dao.SubjectMapper">
     <insert id="addSubjectinfo">
  INSERT INTO t_subject
-(uid,Subjectname,subjecttype,xuefen,jidian,bz,ispass,school_group,grade,teacherid,type,xid) VALUE
-(#{uid},#{Subjectname},#{subjecttype},#{xuefen},#{jidian},#{bz},#{ispass},#{school_group},#{grade},#{teacherid},#{type},#{xid})
+(uid,subjectname,subjecttype,xuefen,jidian,bz,ispass,school_group,grade,teacherid,type,xid) VALUE
+(#{uid},#{subjectname},#{subjecttype},#{xuefen},#{jidian},#{bz},#{ispass},#{school_group},#{grade},#{teacherid},#{type},#{xid})
     </insert>
 
 

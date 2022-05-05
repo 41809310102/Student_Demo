@@ -207,8 +207,20 @@
                 </el-dialog>
               </div></el-col>
               <el-col v-if="teacheradmin" :span="6"><div class="grid-content bg-purple">
-                <img src="../assets/icon/m2.png" @click="mydata" class="image">
+                <img src="../assets/icon/m2.png" @click="addSuject=true" class="image">
                 <span class="mtext">成绩导入</span>
+                <el-dialog title="成绩导入" :visible.sync="addSuject" width="40%">
+                  <el-upload
+                          class="upload-demo"
+                          drag
+                          action="http://localhost:9002/api/subject/upload"
+                          :on-success="addSuccess"
+                          multiple>
+                    <i class="el-icon-upload"></i>
+                    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                    <div class="el-upload__tip" slot="tip">只能上传xlsx文件，且不超过500kb</div>
+                  </el-upload>
+                </el-dialog>
               </div></el-col>
             </el-row>
           </el-card>
@@ -426,8 +438,9 @@
   export default {
     data () {
       return {
-        studentadmin:false,
-        teacheradmin:false,
+        studentadmin:false,//班干部权限
+        teacheradmin:false,//教师权限
+        addSuject:false,//成绩导入
         quxiao:false,
         setuan:false,//创建社团管理页面
         addactionwin:false,//新建活动窗口
@@ -832,8 +845,13 @@
           this.studentadmin = true;
           this.teacheradmin = true;
         }
-      }
+      },
 
+      //上传成绩
+      addSuccess(res){
+          this.$message.success(res);
+          this.addSuject = false;
+      }
     },
     //只显示前10个字符
     filters:{

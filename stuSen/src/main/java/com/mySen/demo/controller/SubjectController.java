@@ -130,7 +130,7 @@ public class SubjectController {
             Pushtest pushtest = new Pushtest();
             list = pushtest.uploadExcel(file,inputStream);
             for(int i = 0;i<list.size();i++){
-
+                 subjectservice.addSubjectinfo(list.get(i));
             }
             System.out.println("题目导入完成！");
             inputStream.close();
