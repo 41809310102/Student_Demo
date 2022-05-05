@@ -7,9 +7,9 @@
         <image class="pic1" src="../../image/1.png"/>
         <view class="txt">扫码签到</view>
       </view>   
-      <view  class="box1" bindtap="scanCodeEvent1">
+      <view  wx:if="{{role}}" class="box1" bindtap="getlocal">
         <image class="pic" src="../../image/2.png"/>
-        <view class="txt">扫码补签</view>
+        <view class="txt">位置添加</view>
       </view>
 </scroll-view>
 </view>

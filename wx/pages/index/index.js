@@ -4,6 +4,7 @@ const app = getApp()
 
 Page({
   data: {
+    role:true,
     scanCode1:'扫码',
     formdata: '',  
     foundlocation:'',
@@ -16,7 +17,14 @@ Page({
   // 事件处理函数
 
   onLoad() {
-    
+    //判断当前用户身份
+    const user =  wx.getStorageSync("user");
+    console.log(user);
+    if(user.role=="普通学生"){
+       this.setData({
+         role:false,
+       })
+    }
   },
 
 
@@ -183,5 +191,63 @@ getSign(){
  
 
 },
+
+
+//获取当前位置经纬度并上传置服务器
+getlocal(e){
+  console.log(e)
+    var that = this;
+    var address =null
+    var name =null
+    wx.getLocation({
+      type: 'gcj02',
+       success: function (res) {
+        that.setData({
+            lat1:res.latitude,
+            lng1:res.longitude,
+          })
+        }
+    })
+    wx.chooseLocation({
+      success: function (res) {
+        console.log(res)
+        address = res.address;
+        name = res.name;
+        console.log(name + '   ' + address)
+        //这里将地址信息发送给RFL服务器
+       var local = {
+         localname:name,
+         lat2:that.data.lat1,
+         lng2:that.data.lng1
+       }
+       wx.request({
+        url: app.data.url+'api/Local/addlocal',
+        data:local,
+        header: {
+          'content-type': 'application/json'
+        },
+        method:"POST",
+        success:function(res){
+          console.log(res.data);
+          if(res.data.code==1){
+            wx.showToast({
+              title: '添加成功',
+              icon:'none'
+            })
+          }else{
+            wx.showToast({
+              title: '添加失败',
+              icon:'none'
+            })
+          }
+        }
+       })
+
+     },
+      fail: function (e) {
+        console.log(e)
+      },
+    })
+}
 
 })
