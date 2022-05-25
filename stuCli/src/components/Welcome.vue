@@ -174,7 +174,7 @@
               </div></el-col>
               <el-col v-if="teacheradmin" :span="6"><div class="grid-content bg-purple">
                 <img src="../assets/icon/m8.png" @click="jifen" class="image">
-                <span class="mtext">积分管理</span>
+                <span class="mtext">活动管理</span>
               </div></el-col>
               <el-col v-if="teacheradmin" :span="6"><div class="grid-content bg-purple">
                 <img src="../assets/icon/m9.png" @click="assocation" class="image">

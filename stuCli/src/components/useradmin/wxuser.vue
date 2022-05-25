@@ -129,12 +129,12 @@
                                   </el-form-item>
                                   <el-form-item label="学院:">
                                       <el-select v-model="sizeForm.shool_group" placeholder="请选择学院">
-                                          <el-option label="管理学院" value="管理学院"></el-option>
-                                          <el-option label="理学院" value="理学院"></el-option>
-                                          <el-option label="计算机科学学院" value="计算机科学学院"></el-option>
-                                          <el-option label="机械工程学院" value="机械工程学院"></el-option>
-                                          <el-option label="材料工程学院" value="材料工程学院"></el-option>
-                                          <el-option label="物理学院" value="物理学院"></el-option>
+                                          <el-option label="电子信息与人工智能学院" value="电子信息与人工智能学院"></el-option>
+                                          <el-option label="电气与控制工程学院" value="电气与控制工程学院"></el-option>
+                                          <el-option label="阿尔斯特学院" value="机械工程学院"></el-option>
+                                          <el-option label="经济与管理学院" value="经济与管理学院"></el-option>
+                                          <el-option label="文理学院" value="文理学院"></el-option>
+                                          <el-option label="机电学院" value="机电学院"></el-option>
                                       </el-select>
                                   </el-form-item>
                                   <el-form-item label="社团:">

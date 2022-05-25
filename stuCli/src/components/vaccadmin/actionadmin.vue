@@ -310,7 +310,7 @@
                 if (confirmResult != 'confirm') {
                     return this.$message.info("已取消操作");
                 }
-                const {data:res} = await this.$http.get("api/Action/deleteAction?id="+id);
+                const {data:res} = await this.$http.get("api/Action/deleteAction?id="+row.id);
                 if(res=="success"){
                     this.$message.success("删除成功")
                     this.dialogFormVisible = false
